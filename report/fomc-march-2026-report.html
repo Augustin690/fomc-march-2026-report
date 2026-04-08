@@ -103,6 +103,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 <a href="#sep">SEP</a>
 <a href="#dotplot">Dot Plot</a>
 <a href="#risk">Risk</a>
+<a href="#reaction">Reaction</a>
 <a href="#conclusion">Conclusion</a>
 </div>
 </nav>
@@ -351,21 +352,104 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 </section>
 
 <div class="container"><div class="divider"></div></div>
+<!-- MARKET REACTION -->
+<section class="section" id="reaction">
+<div class="container">
+<div class="reveal">
+<span class="section-label">04D / Market Impact</span>
+<h2 class="section-title">Marginal Information & Market Reaction</h2>
+<p class="section-subtitle">What did this meeting actually tell us that markets didn't already know? The distinction between priced-in consensus and genuine surprise is where the alpha lives.</p>
+</div>
+
+<div class="card reveal" style="overflow-x:auto">
+<h3 style="font-size:16px;margin-bottom:16px;color:var(--muted)">Signal Decomposition — Priced In vs. Surprise</h3>
+<table class="data-table">
+<thead><tr><th>Signal</th><th>Market Expectation</th><th>Actual Outcome</th><th>Verdict</th></tr></thead>
+<tbody>
+<tr><td colspan="4" style="color:var(--teal);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">FULLY PRICED IN — NO MARGINAL INFORMATION</td></tr>
+<tr><td>Rate decision</td><td class="mono">Hold at 3.50–3.75%</td><td class="mono">Hold at 3.50–3.75%</td><td><span class="badge badge-flat">Expected</span></td></tr>
+<tr><td>2026 dot median</td><td class="mono">~3.4% (2 cuts)</td><td class="mono">3.4% (2 cuts)</td><td><span class="badge badge-flat">Expected</span></td></tr>
+<tr><td>Fed funds path 2027-28</td><td class="mono">3.1% terminal</td><td class="mono">3.1% terminal</td><td><span class="badge badge-flat">Expected</span></td></tr>
+<tr><td>Unemployment projections</td><td class="mono">~4.4%</td><td class="mono">4.4%</td><td><span class="badge badge-flat">Expected</span></td></tr>
+<tr><td colspan="4" style="color:var(--gold);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">PARTIAL SURPRISE — MARGINAL HAWKISH TILT</td></tr>
+<tr><td>PCE inflation upgrade</td><td class="mono">+10-20bp</td><td class="mono" style="color:var(--red)">+30bp (to 2.7%)</td><td><span class="badge badge-up">Hawkish</span></td></tr>
+<tr><td>Inflation up + no rate change</td><td class="mono">Some rate adjustment</td><td class="mono" style="color:var(--red)">No rate path change</td><td><span class="badge badge-up">Hawkish Tolerance</span></td></tr>
+<tr><td>Longer-run neutral rate</td><td class="mono">3.0%</td><td class="mono" style="color:var(--red)">3.1%</td><td><span class="badge badge-up">Structurally Higher</span></td></tr>
+<tr><td colspan="4" style="color:var(--red);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">GENUINE SURPRISE — NEW INFORMATION</td></tr>
+<tr><td>2026 dot distribution</td><td class="mono">Lean toward cuts</td><td class="mono" style="color:var(--gold)">Dead split: 7 vs 7</td><td><span class="badge badge-up">More Divided</span></td></tr>
+<tr><td>Risk assessment unanimity</td><td class="mono">Mixed tilt</td><td class="mono" style="color:var(--red)">14/19 downside GDP, 17/19 upside inflation</td><td><span class="badge badge-up">Stagflation Signal</span></td></tr>
+<tr><td>Miran dissent (cut)</td><td class="mono">Unanimous hold</td><td class="mono" style="color:var(--teal)">10-1, dovish dissent</td><td><span class="badge badge-down">Dovish Anchor</span></td></tr>
+<tr><td>Middle East language</td><td class="mono">Not expected</td><td class="mono" style="color:var(--gold)">Explicit risk flag</td><td><span class="badge badge-up">New Risk Factor</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card reveal" style="border-left:3px solid var(--gold)">
+<h3 style="font-size:18px;margin-bottom:12px">Where the Marginal Information Is</h3>
+<p style="color:var(--muted);margin-bottom:16px">The rate decision and dot plot median were entirely priced in — fed funds futures had assigned a 97% probability to a hold, and the median path was spot-on with consensus. This is not where the actionable signal lives.</p>
+<p style="color:var(--muted);margin-bottom:16px">The marginal information came in three layers:</p>
+<p style="color:var(--muted);margin-bottom:12px"><strong style="color:var(--text)">1. The inflation-tolerance signal.</strong> Markets expected a 10-20bp PCE inflation upgrade. The actual +30bp — combined with zero change in the rate path — is a revealed preference statement. The Committee is explicitly choosing to run hotter for longer. For rates markets, this compresses the probability of near-term cuts and extends the duration of the current pause. The 2-year yield should reprice modestly higher as the market absorbs a wider inflation tolerance band.</p>
+<p style="color:var(--muted);margin-bottom:12px"><strong style="color:var(--text)">2. The dot distribution, not the median.</strong> The median didn't move, but the shape changed dramatically. A 7-7 split on 2026 is far more divided than expected. This means every incoming data print carries outsized binary risk — one PCE report or one NFP miss could tip the balance from "hold" to "cut" (or vice versa). Options markets should reprice higher implied volatility around data releases.</p>
+<p style="color:var(--muted)"><strong style="color:var(--text)">3. The risk tilt as a leading indicator.</strong> The near-unanimous stagflation risk assessment (14/19 on GDP, 17/19 on inflation) is the strongest forward signal in the SEP. Historically, when the Committee's risk balance shifts this decisively, policy follows within 2-3 meetings. The Committee is pre-announcing its reaction function: if growth deteriorates further, they will cut <em>despite</em> elevated inflation. This is the put the market didn't fully have before this meeting.</p>
+</div>
+
+<div class="card reveal" style="border-left:3px solid var(--teal)">
+<h3 style="font-size:18px;margin-bottom:12px">Immediate Market Implications</h3>
+<div style="display:grid;gap:16px">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--teal);font-size:14px;font-weight:700;min-width:90px">Rates</span><p style="color:var(--muted)">Front-end anchored by the hold, but the belly (5Y) should steepen as the market prices in a wider range of outcomes. The 2s10s spread likely widens modestly as the long end absorbs higher inflation tolerance. SOFR strip should compress implied cuts for the June meeting but keep September live.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:14px;font-weight:700;min-width:90px">Equities</span><p style="color:var(--muted)">Near-term neutral to slightly negative. The "no more cuts" camp gaining strength is a headwind for duration-sensitive growth stocks. But the dovish dissent and risk tilt provide a floor — the Fed put is bruised but not broken. Quality factor should outperform momentum.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--red);font-size:14px;font-weight:700;min-width:90px">Credit</span><p style="color:var(--muted)">HY spreads face mild widening pressure from the stagflation tilt. The GDP downside risk being flagged by 14/19 members is a canary for corporate earnings deterioration. IG-HY spread differential should widen. Favor up-in-quality rotation.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--purple);font-size:14px;font-weight:700;min-width:90px">FX / Crypto</span><p style="color:var(--muted)">DXY mildly supported by the hawkish inflation tolerance (higher-for-longer rates vs. G10 peers). BTC faces cross-currents: the stagflation narrative is historically negative for risk assets, but the emerging Fed put on growth provides a floor. Correlation with equities likely increases. Net: range-bound with downside skew until the data resolves the 7-7 split.</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
 <!-- CONCLUSION -->
 <section class="section" id="conclusion">
 <div class="container">
 <div class="reveal">
-<span class="section-label">05 / Conclusion</span>
-<h2 class="section-title">What This Means</h2>
+<span class="section-label">06 / Conclusion</span>
+<h2 class="section-title">What This Means for Portfolios</h2>
+<p class="section-subtitle">The Fed is trapped. The data is noisy. The Committee is split. Here's how to think about positioning across horizons.</p>
 </div>
+
+<div class="card reveal" style="border-left:3px solid var(--red)">
+<h3 style="font-size:18px;margin-bottom:16px">The Core Problem</h3>
+<p style="color:var(--muted);margin-bottom:12px">The Fed faces a policy constraint that has no clean solution. Core PCE at 3.06% is too high to cut. GDP at 0.7% is too low to hike. Unemployment drifting toward 4.5% creates urgency to ease, but the inflation re-acceleration removes the permission to do so. The SEP reveals a Committee that upgraded inflation by 30bp and shrugged — choosing to absorb the overshoot rather than respond. This is a regime of deliberate inaction, and it has consequences for every asset class.</p>
+</div>
+
 <div class="card reveal" style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border-left:3px solid var(--gold)">
-<div style="display:grid;gap:20px">
-<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--red);font-size:20px;font-weight:700;min-width:24px">1.</span><p>The Fed is trapped between sticky inflation (Core PCE 3.06%) and slowing growth (GDP 0.7%). Neither side of the dual mandate permits decisive action.</p></div>
-<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:20px;font-weight:700;min-width:24px">2.</span><p>The SEP shows the Committee upgraded inflation forecasts by 20-30bp but left the rate path unchanged — they are choosing to wait and hope rather than act preemptively in either direction.</p></div>
-<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">3.</span><p>The dot plot is split almost exactly down the middle on whether another cut happens in 2026. This binary outcome creates event risk around every future meeting and data release.</p></div>
-<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--red);font-size:20px;font-weight:700;min-width:24px">4.</span><p>The risk balance is the most stagflationary since March 2022 — near-unanimous downside GDP risk combined with upside inflation risk. The Committee itself is worried about stagflation.</p></div>
-<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--teal);font-size:20px;font-weight:700;min-width:24px">5.</span><p>Miran's dissent (wanting a cut) establishes a formal dovish anchor. If growth deteriorates further, more members could join the cut camp. The threshold for action is lower than the 10-1 vote suggests.</p></div>
-<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--purple);font-size:20px;font-weight:700;min-width:24px">6.</span><p>For markets: the pause is likely to continue through at least the May meeting. The next Core PCE print is the single most important data point — if it stays above 3%, cut expectations get pushed further out. If GDP collapses below zero again in Q1 2026, the pressure to cut will intensify regardless of inflation.</p></div>
+<h3 style="font-size:18px;margin-bottom:16px">Short-Term Horizon (0–3 Months)</h3>
+<div style="display:grid;gap:16px">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:20px;font-weight:700;min-width:24px">1.</span><p><strong style="color:var(--text)">The pause extends through May, likely June.</strong> With the dot plot split 7-7 and Core PCE above 3%, there is no coalition for a cut at the next meeting. The bar for action is a material growth shock (sub-zero GDP or a unemployment spike above 4.6%) or a convincing inflation deceleration (two consecutive Core PCE prints below 0.20% MoM). Neither is the base case in the near term.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:20px;font-weight:700;min-width:24px">2.</span><p><strong style="color:var(--text)">Every data print is now binary event risk.</strong> The 7-7 split means a single persuasive data point can tip the balance. The April Core PCE release (late May) is the highest-impact catalyst. If it prints below 0.25% MoM, the September cut reprices from ~40% to ~65%. If it prints above 0.30%, cut expectations get pushed to 2027. Position sizing should reflect this elevated data sensitivity.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:20px;font-weight:700;min-width:24px">3.</span><p><strong style="color:var(--text)">Carry trades remain attractive but fragile.</strong> The pause provides a stable rate floor that supports carry in front-end duration and short-vol strategies. But the tail risk is asymmetric — a growth shock triggers an aggressive dovish pivot (positive for duration, negative for vol sellers), while an inflation shock extends the pause (negative for risk). Hedge carry positions with OTM payer swaptions or VIX call spreads.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:20px;font-weight:700;min-width:24px">4.</span><p><strong style="color:var(--text)">Reduce beta, increase optionality.</strong> The stagflation risk tilt (14/19 GDP downside, 17/19 inflation upside) is not priced into equity implied vol at current levels. VIX at ~18-20 understates the realized volatility likely around data releases. Consider replacing directional equity exposure with long gamma positions through straddles on SPX and QQQ around CPI/PCE dates.</p></div>
+</div>
+</div>
+
+<div class="card reveal" style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border-left:3px solid var(--blue)">
+<h3 style="font-size:18px;margin-bottom:16px">Medium-Term Horizon (3–12 Months)</h3>
+<div style="display:grid;gap:16px">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">1.</span><p><strong style="color:var(--text)">The reaction function has shifted — growth now dominates inflation.</strong> The risk balance is the clearest signal in the SEP. When 14 of 19 members flag downside GDP risk while raising inflation forecasts and holding rates, they are revealing their loss function: they fear recession more than persistent inflation. This means the next move is almost certainly a cut, not a hike — the question is timing, not direction. For medium-term positioning, this argues for overweighting duration vs. pre-meeting expectations.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">2.</span><p><strong style="color:var(--text)">The neutral rate repricing is structural.</strong> The longer-run dot rising to 3.1% (from 2.5% pre-pandemic) means the market needs to reprice the entire terminal rate framework. Strategies that were built on a 2.5% neutral rate — long duration, growth equity, levered real estate — face permanent headwinds. The implication is a flatter yield curve at a higher level, compressing the equity risk premium. Favor cash-flow positive businesses over growth-at-any-price.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">3.</span><p><strong style="color:var(--text)">Stagflation hedges deserve a portfolio allocation.</strong> The last time the Committee's risk balance looked like this was March 2022, when commodities and TIPS outperformed every other asset class over the subsequent 6 months. If the stagflation scenario materializes (inflation stays above 2.5% while GDP dips below 1% for two consecutive quarters), the optimal portfolio includes: long gold, long TIPS breakevens, short HY credit, and underweight small-cap equities. Even as a tail hedge at 5-10% of portfolio, this basket provides significant convexity.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">4.</span><p><strong style="color:var(--text)">Crypto-specific: the correlation regime matters more than the level.</strong> BTC's correlation with equities has oscillated between 0.3 and 0.7 over the past year. In a stagflation scenario, this correlation typically compresses toward 0.7+ as both BTC and equities sell off on growth fears. The "digital gold" narrative only works when inflation is the primary driver — when growth collapses alongside inflation, BTC trades as a risk asset, not a store of value. Size positions accordingly: if your portfolio is already long equities, additional BTC exposure amplifies drawdown risk in the scenario the Committee itself is most worried about.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">5.</span><p><strong style="color:var(--text)">Watch the Miran coalition.</strong> One dissent becomes three dissenters becomes a policy shift. If Q1 2026 GDP (reported late April) comes in negative — a second contraction in five quarters — the political and institutional pressure to cut will intensify regardless of inflation. The Committee's own risk assessment has already teed this up. A dovish pivot would be a high-velocity catalyst for risk assets across the board: long equities, long credit, long BTC, short DXY. The setup is there; the trigger is the data.</p></div>
+</div>
+</div>
+
+<div class="card reveal" style="border-left:3px solid var(--purple)">
+<h3 style="font-size:18px;margin-bottom:16px">Key Dates to Watch</h3>
+<div style="display:grid;gap:12px">
+<div style="display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--teal);min-width:100px">Apr 10</span><p style="color:var(--muted)">March CPI — first inflation read post-meeting. Sets narrative for May FOMC.</p></div>
+<div style="display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--teal);min-width:100px">Apr 30</span><p style="color:var(--muted)">Q1 2026 GDP advance estimate — if negative, changes everything.</p></div>
+<div style="display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--red);min-width:100px">May 2</span><p style="color:var(--muted)">April NFP — labor market trend confirmation or reversal.</p></div>
+<div style="display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--gold);min-width:100px">May 6-7</span><p style="color:var(--muted)">May FOMC meeting — hold expected, but statement language will signal June intentions.</p></div>
+<div style="display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--red);min-width:100px">May 30</span><p style="color:var(--muted)">April Core PCE — the single most important data point of Q2. This is the catalyst that resolves the 7-7 split.</p></div>
+<div style="display:flex;gap:12px;align-items:center;padding:8px 0"><span class="mono" style="color:var(--purple);min-width:100px">Jun 17-18</span><p style="color:var(--muted)">June FOMC + SEP — next dot plot. If GDP contracted in Q1 and Core PCE moderated, this is where the cut happens.</p></div>
 </div>
 </div>
 </div>
