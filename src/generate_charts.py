@@ -207,37 +207,43 @@ def chart_dotplot():
     style_ax(ax, fig, "FOMC Dot Plot — March 2026 SEP")
 
     x_positions = {y: i for i, y in enumerate(years)}
-    dot_spread = 0.06  # horizontal spread per dot
+    dot_spread = 0.08  # horizontal spread per dot (matches ECharts 0.08 offset)
 
     for year, rates in dot_data.items():
         xc = x_positions[year]
         for rate, count in rates.items():
             offsets = np.linspace(-(count-1)*dot_spread/2, (count-1)*dot_spread/2, count)
             for off in offsets:
-                ax.plot(xc + off, rate, 'o', color=BLUE, markersize=8, markeredgecolor='white',
-                        markeredgewidth=0.8, zorder=3)
+                ax.plot(xc + off, rate, 'o', color=BLUE, markersize=10,
+                        markeredgecolor=(1, 1, 1, 0.2), markeredgewidth=0.8,
+                        alpha=0.85, zorder=3)
 
     # Medians
     for year, med in medians.items():
         xc = x_positions[year]
-        ax.plot(xc, med, 'D', color=GOLD, markersize=11, markeredgecolor='white', markeredgewidth=1, zorder=4)
+        ax.plot(xc, med, 'D', color=GOLD, markersize=14, markeredgecolor='white',
+                markeredgewidth=1.5, zorder=4)
 
     ax.set_ylim(2.25, 4.0)
-    ax.yaxis.set_major_locator(mticker.MultipleLocator(0.25))
-    ax.yaxis.set_minor_locator(mticker.MultipleLocator(0.125))
-    ax.yaxis.grid(True, which='minor', color='#1a2d4d', linewidth=0.3)
-    ax.yaxis.grid(True, which='major', color='#1a2d4d', linewidth=0.6)
+    ax.yaxis.set_major_locator(mticker.MultipleLocator(0.125))
+    ax.yaxis.grid(True, which='major', color=(1, 1, 1, 0.04), linewidth=0.5)
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(
+        lambda v, _: f'{v:.2f}%' if v % 0.25 == 0 else ''))
+    ax.xaxis.grid(True, color=(1, 1, 1, 0.04), linewidth=0.5)
 
     ax.set_xticks(range(len(years)))
-    ax.set_xticklabels(years, fontsize=10, color=TEXT)
+    ax.set_xticklabels(years, fontsize=12, fontweight='bold', color=TEXT)
 
     # Legend
     from matplotlib.lines import Line2D
     legend_elements = [
-        Line2D([0],[0], marker='o', color='w', markerfacecolor=BLUE, markersize=8, markeredgecolor='white', label='Participant', linestyle='None'),
-        Line2D([0],[0], marker='D', color='w', markerfacecolor=GOLD, markersize=10, markeredgecolor='white', label='Median', linestyle='None'),
+        Line2D([0],[0], marker='o', color='w', markerfacecolor=BLUE, markersize=10,
+               markeredgecolor=(1, 1, 1, 0.2), label='Participant', linestyle='None'),
+        Line2D([0],[0], marker='D', color='w', markerfacecolor=GOLD, markersize=12,
+               markeredgecolor='white', label='Median', linestyle='None'),
     ]
-    ax.legend(handles=legend_elements, facecolor=CARD, edgecolor=MUTED, labelcolor=TEXT, fontsize=9, loc='upper right')
+    ax.legend(handles=legend_elements, facecolor=CARD, edgecolor=MUTED, labelcolor=TEXT,
+              fontsize=10, loc='upper right')
 
     fig.tight_layout()
     fig.savefig(f'{OUTPUT}/chart_dotplot.png', dpi=DPI, facecolor=BG)
