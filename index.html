@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>March 2026 FOMC Meeting: Macro Context & SEP Analysis</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1628;--bg2:#0f1f38;--bg3:#152a4a;--text:#e8edf5;--muted:#8899b4;--teal:#00d4aa;--red:#ff6b6b;--gold:#ffd700;--blue:#4e9fff;--purple:#a78bfa}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);line-height:1.7;overflow-x:hidden}
+h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
+.mono{font-family:'JetBrains Mono',monospace}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+.grain{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));z-index:1001;width:0;transition:width .1s}
+
+/* Nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;backdrop-filter:blur(16px);background:rgba(10,22,40,.8);border-bottom:1px solid rgba(255,255,255,.06);transform:translateY(-100%);transition:transform .3s}
+.nav.visible{transform:translateY(0)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:24px;overflow-x:auto}
+.nav a{color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap;transition:color .2s;font-weight:500;letter-spacing:.02em}
+.nav a:hover,.nav a.active{color:var(--teal)}
+
+/* Section */
+.section{padding:100px 0 60px;position:relative}
+.section-label{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;font-weight:600}
+.section-title{font-size:clamp(28px,4vw,44px);line-height:1.15;margin-bottom:24px}
+.section-subtitle{font-size:18px;color:var(--muted);max-width:700px;margin-bottom:40px}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:32px;margin-bottom:32px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent)}
+.chart-box{width:100%;height:400px;min-height:300px}
+.chart-box-sm{width:100%;height:320px;min-height:260px}
+
+/* Stat pill */
+.stat{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:6px 14px;font-size:14px;font-weight:600}
+.stat.up{color:var(--red);border-color:rgba(255,107,107,.2)}
+.stat.down{color:var(--teal);border-color:rgba(0,212,170,.2)}
+.stat.neutral{color:var(--gold);border-color:rgba(255,215,0,.2)}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse;font-size:14px}
+.data-table th{text-align:left;padding:12px 14px;border-bottom:2px solid rgba(255,255,255,.1);color:var(--muted);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.data-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.data-table tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.badge-up{background:rgba(255,107,107,.15);color:var(--red)}
+.badge-down{background:rgba(0,212,170,.15);color:var(--teal)}
+.badge-flat{background:rgba(255,215,0,.12);color:var(--gold)}
+.badge-target{background:rgba(78,159,255,.15);color:var(--blue)}
+
+/* Divider */
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);margin:60px 0}
+
+/* Risk grid */
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.risk-card{background:var(--bg3);border-radius:12px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.risk-val{font-size:36px;font-weight:700;line-height:1}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(0,212,170,.08),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(255,107,107,.06),transparent 50%)}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);color:var(--red);font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;margin-bottom:24px}
+.hero-title{font-size:clamp(36px,6vw,72px);line-height:1.05;margin-bottom:20px;max-width:900px}
+.hero-sub{font-size:clamp(16px,2vw,20px);color:var(--muted);max-width:680px;margin-bottom:40px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:16px}
+.hero-stat{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 24px;min-width:150px}
+.hero-stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.hero-stat-value{font-size:24px;font-weight:700}
+
+/* Animate */
+.reveal{opacity:0;transform:translateY(40px)}
+
+@media(max-width:768px){
+.card{padding:20px}
+.chart-box{height:300px;min-height:240px}
+.chart-box-sm{height:260px;min-height:220px}
+.hero-stats{flex-direction:column}
+.nav-inner{gap:16px}
+.risk-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav" id="nav">
+<div class="nav-inner">
+<a href="#hero" style="color:var(--text);font-weight:700;font-size:14px">FOMC</a>
+<a href="#inflation">Inflation</a>
+<a href="#labor">Labor</a>
+<a href="#gdp">GDP</a>
+<a href="#fedpath">Fed Funds</a>
+<a href="#sep">SEP</a>
+<a href="#dotplot">Dot Plot</a>
+<a href="#risk">Risk</a>
+<a href="#conclusion">Conclusion</a>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="hero-bg"></div>
+<div class="container" style="position:relative;z-index:1">
+<div class="hero-tag reveal">STAGFLATION WATCH</div>
+<h1 class="hero-title reveal">March 2026<br>FOMC Meeting</h1>
+<p class="hero-sub reveal">A comprehensive analysis of the macro-economic context, Summary of Economic Projections, and dot plot from the Federal Reserve's March 17-18, 2026 meeting.</p>
+<div class="hero-stats reveal">
+<div class="hero-stat">
+<div class="hero-stat-label">Fed Funds Rate</div>
+<div class="hero-stat-value" style="color:var(--gold)">3.50–3.75%</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-label">Core PCE YoY</div>
+<div class="hero-stat-value" style="color:var(--red)">3.06%</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-label">GDP Growth Q4</div>
+<div class="hero-stat-value" style="color:var(--red)">0.7%</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-label">Unemployment</div>
+<div class="hero-stat-value" style="color:var(--muted)">4.4%</div>
+</div>
+<div class="hero-stat">
+<div class="hero-stat-label">Decision</div>
+<div class="hero-stat-value" style="color:var(--teal)">HOLD</div>
+</div>
+</div>
+<div style="margin-top:20px;font-size:13px;color:var(--muted)" class="reveal mono">Published April 2, 2026 &middot; Source: Federal Reserve, FRED</div>
+</div>
+</section>
+<!-- EXECUTIVE SUMMARY -->
+<section class="section" id="summary">
+<div class="container">
+<div class="reveal">
+<span class="section-label">01 / Overview</span>
+<h2 class="section-title">Executive Summary</h2>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--gold)">
+<p style="font-size:16px;margin-bottom:16px">The Federal Open Market Committee voted <strong>10-1</strong> on March 18, 2026 to hold the federal funds rate at <strong style="color:var(--gold)">3.50–3.75%</strong>, marking the third consecutive meeting without a rate change. Governor Stephen Miran cast the lone dissent, preferring a 25bp cut.</p>
+<p style="font-size:16px;margin-bottom:16px">The statement acknowledged that <em>"economic activity has been expanding at a solid pace"</em> but noted that <em>"job gains have remained low"</em> and <em>"inflation remains somewhat elevated."</em> For the first time in this cycle, the Committee flagged <em>"developments in the Middle East"</em> as a source of elevated uncertainty.</p>
+<p style="font-size:16px">The macro backdrop tells a more troubling story than the statement's measured language suggests. Core PCE has re-accelerated to <strong style="color:var(--red)">3.06% YoY</strong>, GDP growth collapsed to <strong style="color:var(--red)">0.7%</strong> in Q4 2025, and the Committee's own risk assessments reveal near-unanimous stagflation anxiety. This report examines the data the Committee faced and what their projections reveal about the path ahead.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- INFLATION -->
+<section class="section" id="inflation">
+<div class="container">
+<div class="reveal">
+<span class="section-label">02A / Macro Context</span>
+<h2 class="section-title">Inflation — The Fed's Dilemma</h2>
+<p class="section-subtitle">Headline CPI is manageable at 2.4%. But the Fed's preferred gauge — Core PCE — has re-accelerated to 3.06%, the widest divergence in this cycle.</p>
+</div>
+<div class="card reveal">
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+<div class="stat up">CPI YoY <span class="mono">2.43%</span></div>
+<div class="stat up">Core PCE YoY <span class="mono">3.06%</span></div>
+<div class="stat up">Core PCE MoM (Jan) <span class="mono">+0.36%</span></div>
+<div class="stat up">Annualized Run-Rate <span class="mono">~4.3%</span></div>
+</div>
+<div class="chart-box" id="chartInflation"></div>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--red)">
+<h3 style="font-size:18px;margin-bottom:12px">Analysis</h3>
+<p style="color:var(--muted)">CPI YoY has been running in a narrow 2.3–2.5% range since mid-2025, giving a superficial impression that inflation is under control. But Core PCE — which strips out volatile food and energy and is the measure the Fed actually targets — tells a different story. It has re-accelerated from ~2.6% in mid-2025 to 3.06% in January 2026. The last two monthly prints (+0.36% each) annualize to approximately 4.3%, more than double the Fed's 2% target. The widening gap between headline CPI and Core PCE is a classic late-cycle warning: shelter, services, and sticky categories are driving prices higher even as goods disinflation helps the headline number.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- LABOR -->
+<section class="section" id="labor">
+<div class="container">
+<div class="reveal">
+<span class="section-label">02B / Macro Context</span>
+<h2 class="section-title">Labor Market — Softening But Not Breaking</h2>
+<p class="section-subtitle">Unemployment has drifted from 3.9% to 4.4% over two years. Payroll gains have flattened to near-zero. A slow grind, not a cliff — but the direction is clear.</p>
+</div>
+<div class="card reveal">
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+<div class="stat neutral">Unemployment <span class="mono">4.4%</span></div>
+<div class="stat neutral">NFP Feb 2026 <span class="mono">-92K</span></div>
+<div class="stat neutral">Peak UE <span class="mono">4.5%</span> <span style="font-size:12px;color:var(--muted)">(Nov 2025)</span></div>
+</div>
+<div class="chart-box" id="chartUnemployment"></div>
+</div>
+<div class="card reveal">
+<div class="chart-box-sm" id="chartNFP"></div>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--gold)">
+<h3 style="font-size:18px;margin-bottom:12px">Analysis</h3>
+<p style="color:var(--muted)">The labor market is not collapsing, which is precisely why the Fed feels it can wait. Unemployment rose from 3.9% in early 2024 to a peak of 4.5% in November 2025, before settling at 4.4% in February 2026. Nonfarm payroll growth has essentially stalled — several months in late 2025 and early 2026 show negative monthly changes, meaning the economy is no longer reliably adding jobs. The Sahm Rule recession indicator triggers when the 3-month moving average of unemployment rises 0.5pp above its 12-month low. With the low at 4.0% (Jan 2025) and the current rate at 4.4%, we are dangerously close. A single 4.6% print would trigger the rule.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- GDP -->
+<section class="section" id="gdp">
+<div class="container">
+<div class="reveal">
+<span class="section-label">02C / Macro Context</span>
+<h2 class="section-title">GDP Growth — The Growth Cliff</h2>
+<p class="section-subtitle">Quarterly GDP has been wildly erratic — from a contraction of -0.6% to a surge of 4.4% and back to 0.7%. The Committee walked into March with near-stall-speed growth.</p>
+</div>
+<div class="card reveal">
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+<div class="stat up">Q4 2025 GDP <span class="mono">0.7%</span></div>
+<div class="stat up">Q3→Q4 Swing <span class="mono">-3.7pp</span></div>
+<div class="stat neutral">2025 Full-Year Avg <span class="mono">~2.1%</span></div>
+</div>
+<div class="chart-box" id="chartGDP"></div>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--red)">
+<h3 style="font-size:18px;margin-bottom:12px">Analysis</h3>
+<p style="color:var(--muted)">The GDP trajectory has been unusually volatile. Q1 2025 contracted at -0.6%, followed by a strong Q2-Q3 rebound (3.8% and 4.4%), only for Q4 to crash back to 0.7%. This boom-bust pattern — driven partly by inventory swings, trade dynamics, and fiscal impulses — makes it extremely difficult for the Committee to assess underlying trend growth. The 0.7% Q4 print was the freshest hard data the Committee had heading into the March meeting, and it paints a picture of an economy losing momentum fast. Note that GDP data lags by a full quarter — the Q1 2026 advance estimate won't arrive until late April.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- FED FUNDS PATH -->
+<section class="section" id="fedpath">
+<div class="container">
+<div class="reveal">
+<span class="section-label">03 / Policy Path</span>
+<h2 class="section-title">The Fed Funds Rate — From Cuts to Pause</h2>
+<p class="section-subtitle">175 basis points of cuts from September 2024 to December 2025. Then silence. The cutting cycle appears over — for now.</p>
+</div>
+<div class="card reveal">
+<div class="chart-box" id="chartFedFunds"></div>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--teal)">
+<h3 style="font-size:18px;margin-bottom:12px">Analysis</h3>
+<p style="color:var(--muted)">The Fed began cutting in September 2024, taking the effective fed funds rate from 5.33% down to 3.64% by January 2026 — a cumulative 175bp of easing across 7 rate decisions. Then came the pause. January, February, and March 2026 all held steady at 3.64% (target range 3.50-3.75%). The March meeting confirmed that the pause is deliberate, not transitional. With Core PCE re-accelerating above 3%, the Committee cannot credibly justify further cuts without undermining its inflation mandate. The dissent from Miran (who wanted a 25bp cut) signals internal tension, but the 10-1 vote margin shows the majority firmly in the "wait" camp.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- SEP TABLE -->
+<section class="section" id="sep">
+<div class="container">
+<div class="reveal">
+<span class="section-label">04A / SEP Spotlight</span>
+<h2 class="section-title">Summary of Economic Projections</h2>
+<p class="section-subtitle">The Committee raised inflation forecasts but left the rate path unchanged — revealing a willingness to tolerate hotter prices rather than risk overtightening a slowing economy.</p>
+</div>
+<div class="card reveal" style="overflow-x:auto">
+<h3 style="font-size:16px;margin-bottom:16px;color:var(--muted)">March 2026 SEP vs December 2025 — Median Projections</h3>
+<table class="data-table">
+<thead><tr><th>Variable</th><th>Dec 2025</th><th>Mar 2026</th><th>Change</th><th>Direction</th></tr></thead>
+<tbody>
+<tr><td colspan="5" style="color:var(--teal);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">GDP GROWTH</td></tr>
+<tr><td>2026</td><td class="mono">2.3%</td><td class="mono">2.4%</td><td class="mono">+0.1pp</td><td><span class="badge badge-down">Upgraded</span></td></tr>
+<tr><td>2027</td><td class="mono">2.0%</td><td class="mono">2.3%</td><td class="mono">+0.3pp</td><td><span class="badge badge-down">Upgraded</span></td></tr>
+<tr><td>2028</td><td class="mono">1.9%</td><td class="mono">2.1%</td><td class="mono">+0.2pp</td><td><span class="badge badge-down">Upgraded</span></td></tr>
+<tr><td>Longer Run</td><td class="mono">1.8%</td><td class="mono">2.0%</td><td class="mono">+0.2pp</td><td><span class="badge badge-down">Upgraded</span></td></tr>
+<tr><td colspan="5" style="color:var(--gold);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">UNEMPLOYMENT RATE</td></tr>
+<tr><td>2026</td><td class="mono">4.4%</td><td class="mono">4.4%</td><td class="mono">0</td><td><span class="badge badge-flat">Unchanged</span></td></tr>
+<tr><td>2027</td><td class="mono">4.2%</td><td class="mono">4.3%</td><td class="mono">+0.1pp</td><td><span class="badge badge-up">Higher</span></td></tr>
+<tr><td>2028</td><td class="mono">4.2%</td><td class="mono">4.2%</td><td class="mono">0</td><td><span class="badge badge-flat">Unchanged</span></td></tr>
+<tr><td>Longer Run</td><td class="mono">4.2%</td><td class="mono">4.2%</td><td class="mono">0</td><td><span class="badge badge-flat">Unchanged</span></td></tr>
+<tr><td colspan="5" style="color:var(--red);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">PCE INFLATION</td></tr>
+<tr><td>2026</td><td class="mono">2.4%</td><td class="mono">2.7%</td><td class="mono">+0.3pp</td><td><span class="badge badge-up">Higher</span></td></tr>
+<tr><td>2027</td><td class="mono">2.1%</td><td class="mono">2.2%</td><td class="mono">+0.1pp</td><td><span class="badge badge-up">Higher</span></td></tr>
+<tr><td>2028</td><td class="mono">2.0%</td><td class="mono">2.0%</td><td class="mono">0</td><td><span class="badge badge-target">On Target</span></td></tr>
+<tr><td colspan="5" style="color:var(--red);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">CORE PCE INFLATION</td></tr>
+<tr><td>2026</td><td class="mono">2.5%</td><td class="mono">2.7%</td><td class="mono">+0.2pp</td><td><span class="badge badge-up">Higher</span></td></tr>
+<tr><td>2027</td><td class="mono">2.1%</td><td class="mono">2.2%</td><td class="mono">+0.1pp</td><td><span class="badge badge-up">Higher</span></td></tr>
+<tr><td>2028</td><td class="mono">2.0%</td><td class="mono">2.0%</td><td class="mono">0</td><td><span class="badge badge-target">On Target</span></td></tr>
+<tr><td colspan="5" style="color:var(--purple);font-weight:600;font-size:12px;letter-spacing:.1em;padding-top:16px">FEDERAL FUNDS RATE (MIDPOINT)</td></tr>
+<tr><td>2026</td><td class="mono">3.4%</td><td class="mono">3.4%</td><td class="mono">0</td><td><span class="badge badge-flat">Unchanged</span></td></tr>
+<tr><td>2027</td><td class="mono">3.1%</td><td class="mono">3.1%</td><td class="mono">0</td><td><span class="badge badge-flat">Unchanged</span></td></tr>
+<tr><td>2028</td><td class="mono">3.1%</td><td class="mono">3.1%</td><td class="mono">0</td><td><span class="badge badge-flat">Unchanged</span></td></tr>
+<tr><td>Longer Run</td><td class="mono">3.0%</td><td class="mono">3.1%</td><td class="mono">+0.1pp</td><td><span class="badge badge-up">Higher</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--purple)">
+<h3 style="font-size:18px;margin-bottom:12px">Key Takeaway</h3>
+<p style="color:var(--muted)">The headline story is the <strong style="color:var(--text)">inflation upgrade with no change in the rate path</strong>. The Committee raised its 2026 PCE inflation median by 30bp (2.4% to 2.7%) and Core PCE by 20bp (2.5% to 2.7%), yet left the fed funds rate projections completely unchanged across all horizons. This implicitly signals the Committee is willing to tolerate higher inflation for longer rather than risk hiking back into a slowing economy. GDP projections were revised up modestly across all horizons, but this optimism conflicts with the actual Q4 2025 GDP print of 0.7% — the Committee appears to be projecting a rebound that has yet to materialize in the data. The longer-run neutral rate estimate ticked up from 3.0% to 3.1%, reflecting a growing consensus that the post-pandemic structural neutral rate is higher than pre-COVID levels.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- DOT PLOT -->
+<section class="section" id="dotplot">
+<div class="container">
+<div class="reveal">
+<span class="section-label">04B / SEP Spotlight</span>
+<h2 class="section-title">The Dot Plot — A Divided Committee</h2>
+<p class="section-subtitle">For 2026, the dots split almost perfectly: 7 members see no more cuts, 7 see one more. The Committee has rarely been this evenly divided on near-term policy.</p>
+</div>
+<div class="card reveal">
+<div class="chart-box" id="chartDotPlot" style="height:500px"></div>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--blue)">
+<h3 style="font-size:18px;margin-bottom:12px">Dot Plot Analysis</h3>
+<p style="color:var(--muted);margin-bottom:12px">The 2026 column is striking in its bimodality. Seven participants project the midpoint at 3.625% (the current level — meaning no more cuts this year), while seven project 3.375% (one additional 25bp cut). This near-perfect split reflects the fundamental disagreement: hawks see inflation as the binding constraint, doves see growth deceleration as the greater risk.</p>
+<p style="color:var(--muted);margin-bottom:12px">For 2027-2028, the distribution coalesces around 3.125% as the median — implying roughly 50bp of additional cuts over two years beyond 2026. But the range is wide: from 2.375% (aggressive dovish outlier) to 3.875% (a participant who sees rates staying near current levels through 2028).</p>
+<p style="color:var(--muted)">The longer-run dots show significant dispersion (2.625% to 3.875%), with the median at 3.1% — up from 3.0% in December. This upward drift in the neutral rate estimate has major implications: it means the Committee believes the current stance may be <em>less restrictive</em> than previously thought, reducing the urgency to cut further.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- RISK ASSESSMENT -->
+<section class="section" id="risk">
+<div class="container">
+<div class="reveal">
+<span class="section-label">04C / SEP Spotlight</span>
+<h2 class="section-title">Risk Assessment — Stagflation Anxiety</h2>
+<p class="section-subtitle">The most lopsided risk balance in recent SEP history. Nearly every participant sees downside GDP risk and upside inflation risk simultaneously.</p>
+</div>
+<div class="card reveal">
+<h3 style="font-size:16px;margin-bottom:16px;color:var(--muted)">Risk Balance — Where Participants See Risks Tilted</h3>
+<div class="chart-box-sm" id="chartRiskBalance"></div>
+</div>
+<div class="card reveal">
+<h3 style="font-size:16px;margin-bottom:16px;color:var(--muted)">Uncertainty Assessment — Higher Than Historical Norms?</h3>
+<table class="data-table">
+<thead><tr><th>Variable</th><th>Lower</th><th>Similar</th><th>Higher</th></tr></thead>
+<tbody>
+<tr><td>GDP Growth</td><td class="mono">0</td><td class="mono">4</td><td class="mono" style="color:var(--red);font-weight:700">15</td></tr>
+<tr><td>Unemployment</td><td class="mono">0</td><td class="mono">3</td><td class="mono" style="color:var(--red);font-weight:700">16</td></tr>
+<tr><td>PCE Inflation</td><td class="mono">0</td><td class="mono">3</td><td class="mono" style="color:var(--red);font-weight:700">16</td></tr>
+<tr><td>Core PCE</td><td class="mono">0</td><td class="mono">4</td><td class="mono" style="color:var(--red);font-weight:700">15</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card reveal" style="border-left:3px solid var(--red)">
+<h3 style="font-size:18px;margin-bottom:12px">Analysis</h3>
+<p style="color:var(--muted);margin-bottom:12px"><strong style="color:var(--text)">14 of 19 participants</strong> see GDP growth risks tilted to the downside. <strong style="color:var(--text)">16-17 of 19</strong> see inflation and unemployment risks tilted to the upside. Zero participants see upside risks to GDP or downside risks to inflation. This is the textbook definition of stagflation fear expressed through the Committee's own risk framework.</p>
+<p style="color:var(--muted)">The uncertainty diffusion index for March 2026 stands at 0.79 for GDP, 0.84 for unemployment, and 0.84 for PCE inflation — all elevated by historical standards. The last time all four indicators were simultaneously this high was March 2025, during the initial tariff shock. The Fed is telling markets, in its own institutional language, that visibility is exceptionally poor and the worst-case scenario involves simultaneous deterioration on both sides of the dual mandate.</p>
+</div>
+</div>
+</section>
+
+<div class="container"><div class="divider"></div></div>
+<!-- CONCLUSION -->
+<section class="section" id="conclusion">
+<div class="container">
+<div class="reveal">
+<span class="section-label">05 / Conclusion</span>
+<h2 class="section-title">What This Means</h2>
+</div>
+<div class="card reveal" style="background:linear-gradient(135deg,var(--bg2),var(--bg3));border-left:3px solid var(--gold)">
+<div style="display:grid;gap:20px">
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--red);font-size:20px;font-weight:700;min-width:24px">1.</span><p>The Fed is trapped between sticky inflation (Core PCE 3.06%) and slowing growth (GDP 0.7%). Neither side of the dual mandate permits decisive action.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--gold);font-size:20px;font-weight:700;min-width:24px">2.</span><p>The SEP shows the Committee upgraded inflation forecasts by 20-30bp but left the rate path unchanged — they are choosing to wait and hope rather than act preemptively in either direction.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--blue);font-size:20px;font-weight:700;min-width:24px">3.</span><p>The dot plot is split almost exactly down the middle on whether another cut happens in 2026. This binary outcome creates event risk around every future meeting and data release.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--red);font-size:20px;font-weight:700;min-width:24px">4.</span><p>The risk balance is the most stagflationary since March 2022 — near-unanimous downside GDP risk combined with upside inflation risk. The Committee itself is worried about stagflation.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--teal);font-size:20px;font-weight:700;min-width:24px">5.</span><p>Miran's dissent (wanting a cut) establishes a formal dovish anchor. If growth deteriorates further, more members could join the cut camp. The threshold for action is lower than the 10-1 vote suggests.</p></div>
+<div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--purple);font-size:20px;font-weight:700;min-width:24px">6.</span><p>For markets: the pause is likely to continue through at least the May meeting. The next Core PCE print is the single most important data point — if it stays above 3%, cut expectations get pushed further out. If GDP collapses below zero again in Q1 2026, the pressure to cut will intensify regardless of inflation.</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<footer style="padding:60px 0;border-top:1px solid rgba(255,255,255,.06)">
+<div class="container" style="text-align:center;color:var(--muted);font-size:13px">
+<p>Data sourced from the Federal Reserve Board of Governors, FRED (Federal Reserve Economic Data), and Bureau of Economic Analysis.</p>
+<p style="margin-top:8px">Report generated April 2, 2026.</p>
+</div>
+</footer>
+<script>
+/* ── GLOBALS ── */
+gsap.registerPlugin(ScrollTrigger);
+const TC='#00d4aa',RD='#ff6b6b',GD='#ffd700',BL='#4e9fff',PP='#a78bfa',MU='#8899b4',BG='#0a1628',BG2='#0f1f38';
+const tooltipBg='rgba(15,31,56,.95)';
+function makeTooltip(params){
+  if(!Array.isArray(params))params=[params];
+  let h='<div style="background:'+tooltipBg+';border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-family:Inter,sans-serif;font-size:13px;color:#e8edf5;box-shadow:0 4px 20px rgba(0,0,0,.4)">';
+  h+='<div style="font-weight:600;margin-bottom:6px;color:#fff">'+params[0].axisValueLabel+'</div>';
+  params.forEach(p=>{if(p.value!=null){h+='<div style="display:flex;align-items:center;gap:6px;margin:3px 0">'+p.marker+'<span style="color:'+MU+'">'+p.seriesName+'</span> <span style="font-family:JetBrains Mono,monospace;font-weight:600;color:#fff;margin-left:auto">'+((typeof p.value==='number')?p.value.toFixed(2):p.value)+'%</span></div>';}});
+  return h+'</div>';
+}
+const axisLabel={fontFamily:'Inter',fontSize:11,color:MU};
+const splitLine={lineStyle:{color:'rgba(255,255,255,.06)'}};
+
+/* ── CHART INSTANCES (lazy) ── */
+const charts=[];
+function initChart(id,opt){
+  const el=document.getElementById(id);if(!el)return null;
+  const c=echarts.init(el,null,{renderer:'svg'});
+  c.setOption(opt);charts.push(c);return c;
+}
+
+/* ── 1. INFLATION CHART ── */
+function buildInflation(){
+  // CPI index monthly Mar2024-Feb2026
+  const cpiIdx=[312.345,313.023,313.175,313.044,313.569,314.062,314.732,315.631,316.528,317.604,318.961,319.679,319.785,320.302,320.620,321.435,322.169,323.291,324.245,325.063,326.031,326.588,327.460];
+  const cpiMonths=['Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25 ','Nov 25','Dec 25','Jan 26','Feb 26'];
+  // Core PCE index monthly Feb2024-Jan2026 (24 values)
+  const pceIdx=[121.537,122.009,122.304,122.383,122.677,122.911,123.128,123.466,123.832,123.962,124.196,124.587,125.145,125.267,125.502,125.790,126.121,126.430,126.714,126.954,127.245,127.473,127.929,128.394];
+  const pceMonths=['Feb 24','Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26'];
+  // Compute YoY for CPI: need 12-month lag, so first YoY is at index 12 = Mar 25
+  const cpiYoY=[];const cpiLabels=[];
+  for(let i=12;i<cpiIdx.length;i++){cpiYoY.push(((cpiIdx[i]/cpiIdx[i-12])-1)*100);cpiLabels.push(cpiMonths[i]);}
+  // Compute YoY for Core PCE: first YoY at index 12 = Feb 25
+  const pceYoY=[];const pceLabels=[];
+  for(let i=12;i<pceIdx.length;i++){pceYoY.push(((pceIdx[i]/pceIdx[i-12])-1)*100);pceLabels.push(pceMonths[i]);}
+  // Align on common months: Mar 25 to Jan 26 (CPI has Mar25..Feb26, PCE has Feb25..Jan26)
+  // Common: Mar25,Apr25,May25,Jun25,Jul25,Aug25,Sep25,Oct25,Nov25,Dec25,Jan26
+  const labels=['Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26'];
+  // CPI YoY indices 0-11 map to Mar25-Feb26
+  // PCE YoY: index 1-11 map to Mar25-Jan26, no Feb26
+  const cpiData=cpiYoY.slice(0); // all 12
+  const pceData=pceYoY.slice(1); // Mar25 onwards = 11 values
+  pceData.push(null); // no Feb 26 Core PCE yet
+
+  initChart('chartInflation',{
+    tooltip:{trigger:'axis',formatter:makeTooltip},
+    legend:{data:['CPI YoY%','Core PCE YoY%'],top:8,textStyle:{color:MU,fontFamily:'Inter',fontSize:12}},
+    grid:{top:50,bottom:40,left:50,right:20},
+    xAxis:{type:'category',data:labels,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},axisTick:{show:false}},
+    yAxis:{type:'value',min:1.5,max:3.5,axisLabel:{...axisLabel,formatter:'{value}%'},splitLine:splitLine},
+    series:[
+      {name:'CPI YoY%',type:'line',data:cpiData.map(v=>v?+v.toFixed(2):null),smooth:true,lineStyle:{width:2.5,color:GD},itemStyle:{color:GD},symbol:'circle',symbolSize:6,areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(255,215,0,.12)'},{offset:1,color:'rgba(255,215,0,0)'}]}}},
+      {name:'Core PCE YoY%',type:'line',data:pceData.map(v=>v?+v.toFixed(2):null),smooth:true,lineStyle:{width:3,color:RD},itemStyle:{color:RD},symbol:'circle',symbolSize:7,areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(255,107,107,.12)'},{offset:1,color:'rgba(255,107,107,0)'}]}}},
+      {name:'Fed 2% Target',type:'line',markLine:{silent:true,symbol:'none',lineStyle:{type:'dashed',color:RD,width:1.5,opacity:.5},data:[{yAxis:2,label:{formatter:'2% Target',color:RD,fontFamily:'Inter',fontSize:11,position:'insideEndTop'}}]},data:[]}
+    ]
+  });
+}
+
+/* ── 2. UNEMPLOYMENT CHART ── */
+function buildUnemployment(){
+  const months=['Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Nov 25','Dec 25','Jan 26','Feb 26'];
+  const data=[3.9,3.9,3.9,4.1,4.2,4.2,4.1,4.1,4.2,4.1,4.0,4.2,4.2,4.2,4.3,4.1,4.3,4.3,4.4,4.5,4.4,4.3,4.4];
+  initChart('chartUnemployment',{
+    tooltip:{trigger:'axis',formatter:makeTooltip},
+    grid:{top:30,bottom:40,left:50,right:20},
+    xAxis:{type:'category',data:months,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},axisTick:{show:false}},
+    yAxis:{type:'value',min:3.6,max:4.8,axisLabel:{...axisLabel,formatter:'{value}%'},splitLine:splitLine},
+    series:[{
+      name:'Unemployment Rate',type:'line',data:data,smooth:true,
+      lineStyle:{width:2.5,color:GD},itemStyle:{color:GD},symbol:'circle',symbolSize:5,
+      areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(255,215,0,.1)'},{offset:1,color:'rgba(255,215,0,0)'}]}},
+      markLine:{silent:true,symbol:'none',lineStyle:{type:'dashed',color:'rgba(255,107,107,.4)',width:1.5},data:[{yAxis:4.5,label:{formatter:'Sahm Rule Proximity',color:RD,fontFamily:'Inter',fontSize:11,position:'insideEndTop'}}]}
+    }]
+  });
+}
+
+/* ── 3. NFP CHART ── */
+function buildNFP(){
+  const levels=[157466,157530,157608,157695,157748,157757,157912,157945,158079,158316,158268,158310,158377,158485,158498,158478,158542,158472,158548,158408,158449,158432,158558,158466];
+  const months=['Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26'];
+  const changes=[];
+  for(let i=1;i<levels.length;i++){changes.push(levels[i]-levels[i-1]);}
+  initChart('chartNFP',{
+    tooltip:{trigger:'axis',formatter:function(p){
+      const v=p[0];return '<div style="background:'+tooltipBg+';border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-family:Inter;font-size:13px;color:#e8edf5;box-shadow:0 4px 20px rgba(0,0,0,.4)"><div style="font-weight:600;margin-bottom:4px">'+v.axisValueLabel+'</div><div style="font-family:JetBrains Mono;font-weight:600;color:'+(v.value>=0?TC:RD)+'">'+(v.value>=0?'+':'')+v.value+'K</div></div>';}},
+    grid:{top:30,bottom:40,left:55,right:20},
+    xAxis:{type:'category',data:months,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},axisTick:{show:false}},
+    yAxis:{type:'value',axisLabel:{...axisLabel,formatter:'{value}K'},splitLine:splitLine},
+    series:[{
+      name:'Monthly NFP Change',type:'bar',data:changes.map(v=>({value:v,itemStyle:{color:v>=0?TC:RD,borderRadius:v>=0?[3,3,0,0]:[0,0,3,3]}})),
+      barWidth:'50%'
+    }]
+  });
+}
+
+/* ── 4. GDP CHART ── */
+function buildGDP(){
+  const quarters=['Q1 23','Q2 23','Q3 23','Q4 23','Q1 24','Q2 24','Q3 24','Q4 24','Q1 25','Q2 25','Q3 25','Q4 25'];
+  const data=[2.9,2.5,4.7,3.4,0.8,3.6,3.3,1.9,-0.6,3.8,4.4,0.7];
+  initChart('chartGDP',{
+    tooltip:{trigger:'axis',formatter:function(p){
+      const v=p[0];return '<div style="background:'+tooltipBg+';border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-family:Inter;font-size:13px;color:#e8edf5;box-shadow:0 4px 20px rgba(0,0,0,.4)"><div style="font-weight:600;margin-bottom:4px">'+v.axisValueLabel+'</div><div style="font-family:JetBrains Mono;font-weight:600;font-size:16px;color:'+(v.value>=2?TC:v.value>=0?GD:RD)+'">'+v.value+'%</div></div>';}},
+    grid:{top:30,bottom:40,left:50,right:20},
+    xAxis:{type:'category',data:quarters,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},axisTick:{show:false}},
+    yAxis:{type:'value',min:-1.5,max:5.5,axisLabel:{...axisLabel,formatter:'{value}%'},splitLine:splitLine},
+    series:[{
+      name:'Real GDP Growth',type:'bar',data:data.map(v=>({value:v,itemStyle:{color:v<0?RD:v<1.5?GD:TC,borderRadius:v>=0?[4,4,0,0]:[0,0,4,4]}})),
+      barWidth:'55%',
+      markLine:{silent:true,symbol:'none',lineStyle:{type:'dashed',color:'rgba(255,255,255,.15)',width:1},data:[{yAxis:0}]}
+    }]
+  });
+}
+
+/* ── 5. FED FUNDS PATH ── */
+function buildFedFunds(){
+  const months=['Oct 23','Nov 23','Dec 23','Jan 24','Feb 24','Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26'];
+  const data=[5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.13,4.83,4.64,4.48,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.33,4.22,4.09,3.88,3.72,3.64,3.64,3.64];
+  initChart('chartFedFunds',{
+    tooltip:{trigger:'axis',formatter:makeTooltip},
+    grid:{top:30,bottom:40,left:50,right:20},
+    xAxis:{type:'category',data:months,axisLabel:{...axisLabel,interval:2},axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},axisTick:{show:false}},
+    yAxis:{type:'value',min:3,max:5.8,axisLabel:{...axisLabel,formatter:'{value}%'},splitLine:splitLine},
+    series:[{
+      name:'Effective Fed Funds Rate',type:'line',step:'end',data:data,
+      lineStyle:{width:3,color:PP},itemStyle:{color:PP},symbol:'none',
+      areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(167,139,250,.15)'},{offset:1,color:'rgba(167,139,250,0)'}]}},
+      markArea:{silent:true,data:[[{xAxis:'Sep 24',itemStyle:{color:'rgba(0,212,170,.06)'}},{xAxis:'Dec 25'}],[{xAxis:'Jan 26',itemStyle:{color:'rgba(255,215,0,.06)'}},{xAxis:'Mar 26'}]]},
+      markPoint:{data:[
+        {coord:['Sep 24',5.13],value:'Cuts Begin',symbolSize:0,label:{show:true,formatter:'Cuts Begin',color:TC,fontSize:11,fontFamily:'Inter',fontWeight:600,position:'top',distance:12}},
+        {coord:['Jan 26',3.64],value:'Pause',symbolSize:0,label:{show:true,formatter:'Pause',color:GD,fontSize:11,fontFamily:'Inter',fontWeight:600,position:'top',distance:12}}
+      ]}
+    }]
+  });
+}
+
+/* ── 6. DOT PLOT ── */
+function buildDotPlot(){
+  const dotData={
+    '2026':{3.625:7,3.375:7,3.125:2,2.875:2,2.625:1},
+    '2027':{3.875:1,3.625:3,3.375:4,3.125:6,2.875:3,2.625:1,2.375:1},
+    '2028':{3.875:1,3.625:3,3.375:3,3.125:7,2.875:3,2.625:2},
+    'Longer Run':{3.875:1,3.750:1,3.625:1,3.500:1,3.375:2,3.250:1,3.125:3,3.000:5,2.875:2,2.625:2}
+  };
+  const medians={'2026':3.375,'2027':3.125,'2028':3.125,'Longer Run':3.0625};
+  const years=Object.keys(dotData);
+  const scatterData=[];
+  years.forEach((yr,xi)=>{
+    const rates=dotData[yr];
+    Object.entries(rates).forEach(([rate,count])=>{
+      const r=parseFloat(rate);
+      for(let j=0;j<count;j++){
+        const offset=(j-(count-1)/2)*0.08;
+        scatterData.push({value:[xi+offset,r],yr:yr,rate:r,isMedian:false});
+      }
+    });
+  });
+  // median markers
+  const medianData=years.map((yr,i)=>({value:[i,medians[yr]],yr:yr}));
+
+  initChart('chartDotPlot',{
+    tooltip:{trigger:'item',formatter:function(p){
+      if(p.seriesName==='Median')return '<div style="background:'+tooltipBg+';border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;font-family:Inter;font-size:13px;color:#fff">Median: <span style="font-family:JetBrains Mono;color:'+GD+'">'+p.value[1].toFixed(3)+'%</span></div>';
+      return '<div style="background:'+tooltipBg+';border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;font-family:Inter;font-size:13px;color:#fff"><span style="color:'+MU+'">'+years[Math.round(p.value[0])]+'</span><br>Rate: <span style="font-family:JetBrains Mono;color:'+BL+'">'+p.data.rate.toFixed(3)+'%</span></div>';}},
+    grid:{top:20,bottom:40,left:60,right:40},
+    xAxis:{type:'category',data:years,axisLabel:{...axisLabel,fontSize:13,fontWeight:600,color:'#e8edf5'},axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false},splitLine:{show:true,lineStyle:{color:'rgba(255,255,255,.04)'}}},
+    yAxis:{type:'value',min:2.25,max:4.0,interval:0.125,axisLabel:{...axisLabel,formatter:function(v){return v%0.25===0?v.toFixed(2)+'%':''},interval:0,fontFamily:'JetBrains Mono'},splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}},axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}}},
+    series:[
+      {name:'Dots',type:'scatter',data:scatterData,symbolSize:14,itemStyle:{color:BL,opacity:.85,borderColor:'rgba(255,255,255,.2)',borderWidth:1},z:2},
+      {name:'Median',type:'scatter',data:medianData,symbolSize:20,symbol:'diamond',itemStyle:{color:GD,borderColor:'#fff',borderWidth:2},z:3}
+    ]
+  });
+}
+
+/* ── 7. RISK BALANCE CHART ── */
+function buildRiskBalance(){
+  const cats=['GDP Growth','Unemployment','PCE Inflation','Core PCE'];
+  const downside=[-14,0,0,0];
+  const balanced=[5,3,2,3];
+  const upside=[0,16,17,16];
+  initChart('chartRiskBalance',{
+    tooltip:{trigger:'axis',formatter:function(ps){
+      let h='<div style="background:'+tooltipBg+';border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-family:Inter;font-size:13px;color:#e8edf5;box-shadow:0 4px 20px rgba(0,0,0,.4)">';
+      h+='<div style="font-weight:600;margin-bottom:6px">'+ps[0].axisValueLabel+'</div>';
+      ps.forEach(p=>{h+='<div style="margin:2px 0">'+p.marker+' '+p.seriesName+': <strong>'+Math.abs(p.value)+'</strong></div>';});
+      return h+'</div>';}},
+    grid:{top:30,bottom:40,left:110,right:20},
+    xAxis:{type:'value',min:-19,max:19,axisLabel:{...axisLabel,formatter:function(v){return Math.abs(v)}},splitLine:{lineStyle:{color:'rgba(255,255,255,.04)'}},axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}}},
+    yAxis:{type:'category',data:cats,axisLabel:{...axisLabel,fontSize:13,color:'#e8edf5'},axisLine:{lineStyle:{color:'rgba(255,255,255,.1)'}},axisTick:{show:false}},
+    series:[
+      {name:'Downside',type:'bar',stack:'risk',data:downside,itemStyle:{color:RD,borderRadius:[4,0,0,4]},barWidth:28,label:{show:true,position:'inside',formatter:function(p){return p.value!==0?Math.abs(p.value):''},fontFamily:'JetBrains Mono',fontSize:12,fontWeight:600,color:'#fff'}},
+      {name:'Balanced',type:'bar',stack:'risk',data:balanced,itemStyle:{color:'rgba(255,215,0,.7)',borderRadius:0},barWidth:28,label:{show:true,position:'inside',formatter:function(p){return p.value!==0?p.value:''},fontFamily:'JetBrains Mono',fontSize:12,fontWeight:600,color:BG}},
+      {name:'Upside',type:'bar',stack:'risk',data:upside,itemStyle:{color:TC,borderRadius:[0,4,4,0]},barWidth:28,label:{show:true,position:'inside',formatter:function(p){return p.value!==0?p.value:''},fontFamily:'JetBrains Mono',fontSize:12,fontWeight:600,color:BG}}
+    ]
+  });
+}
+
+/* ── BUILD ALL ── */
+function buildAllCharts(){buildInflation();buildUnemployment();buildNFP();buildGDP();buildFedFunds();buildDotPlot();buildRiskBalance();}
+buildAllCharts();
+window.addEventListener('resize',()=>{charts.forEach(c=>c.resize())});
+
+/* ── GSAP ANIMATIONS ── */
+document.querySelectorAll('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:0.8,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+});
+
+/* ── NAV SHOW/HIDE ── */
+const nav=document.getElementById('nav');
+ScrollTrigger.create({start:()=>window.innerHeight*.6,onEnter:()=>nav.classList.add('visible'),onLeaveBack:()=>nav.classList.remove('visible')});
+
+/* ── PROGRESS BAR ── */
+const pb=document.getElementById('progressBar');
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement.scrollTop||document.body.scrollTop;
+  const h=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+  pb.style.width=(s/h*100)+'%';
+});
+
+/* ── ACTIVE NAV LINK ── */
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-200)cur=s.id;});
+  navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+cur);});
+});
+</script>
+</body>
+</html>
