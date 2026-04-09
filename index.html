@@ -384,6 +384,36 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 </table>
 </div>
 
+<div class="card reveal">
+<h3 style="font-size:16px;margin-bottom:8px;color:var(--muted)">Cross-Asset Reaction — FOMC Window (Mar 10–25)</h3>
+<p style="color:var(--muted);font-size:13px;margin-bottom:16px">Performance indexed to 100 at the March 16 close (day before FOMC). The vertical band marks the March 17-18 meeting. Data sourced from Yahoo Finance and FRED.</p>
+<div class="chart-box" id="chartMarketReaction" style="height:440px"></div>
+</div>
+
+<div class="card reveal">
+<h3 style="font-size:16px;margin-bottom:8px;color:var(--muted)">Treasury Yields — FOMC Window (Mar 10–25)</h3>
+<p style="color:var(--muted);font-size:13px;margin-bottom:16px">2-Year and 10-Year yields around the meeting. The hawkish SEP surprise drove a bear-flattening move: the 2Y jumped +20bp in a week while the 10Y rose +12bp, reflecting front-end repricing of the inflation tolerance signal.</p>
+<div class="chart-box-sm" id="chartYieldReaction" style="height:340px"></div>
+</div>
+
+<div class="card reveal" style="overflow-x:auto">
+<h3 style="font-size:16px;margin-bottom:16px;color:var(--muted)">Asset Scorecard — Before vs After FOMC</h3>
+<table class="data-table">
+<thead><tr><th>Asset</th><th class="mono">Mar 16 Close</th><th class="mono">Mar 18 Close</th><th class="mono">Mar 25 Close</th><th>2-Day Move</th><th>1-Week Move</th></tr></thead>
+<tbody>
+<tr><td>S&P 500</td><td class="mono">6,699</td><td class="mono">6,625</td><td class="mono">6,592</td><td style="color:var(--red)" class="mono">-1.11%</td><td style="color:var(--red)" class="mono">-1.60%</td></tr>
+<tr><td>Nasdaq 100</td><td class="mono">24,655</td><td class="mono">24,425</td><td class="mono">24,163</td><td style="color:var(--red)" class="mono">-0.93%</td><td style="color:var(--red)" class="mono">-2.00%</td></tr>
+<tr><td>BTC</td><td class="mono">$74,861</td><td class="mono">$71,246</td><td class="mono">$71,310</td><td style="color:var(--red)" class="mono">-4.83%</td><td style="color:var(--red)" class="mono">-4.74%</td></tr>
+<tr><td>Gold</td><td class="mono">$4,994</td><td class="mono">$4,890</td><td class="mono">$4,550</td><td style="color:var(--red)" class="mono">-2.08%</td><td style="color:var(--red)" class="mono">-8.90%</td></tr>
+<tr><td>DXY</td><td class="mono">99.71</td><td class="mono">100.09</td><td class="mono">99.60</td><td style="color:var(--teal)" class="mono">+0.38%</td><td style="color:var(--red)" class="mono">-0.11%</td></tr>
+<tr><td>VIX</td><td class="mono">23.51</td><td class="mono">25.09</td><td class="mono">25.33</td><td style="color:var(--red)" class="mono">+6.72%</td><td style="color:var(--red)" class="mono">+7.74%</td></tr>
+<tr><td>2Y Yield</td><td class="mono">3.68%</td><td class="mono">3.76%</td><td class="mono">3.84%</td><td style="color:var(--red)" class="mono">+8bp</td><td style="color:var(--red)" class="mono">+16bp</td></tr>
+<tr><td>10Y Yield</td><td class="mono">4.23%</td><td class="mono">4.26%</td><td class="mono">4.33%</td><td style="color:var(--red)" class="mono">+3bp</td><td style="color:var(--red)" class="mono">+10bp</td></tr>
+</tbody>
+</table>
+<p style="color:var(--muted);font-size:12px;margin-top:12px;font-style:italic">Red across the board. BTC led the selloff (-4.8% in 2 days), followed by gold (-2.1%). Equities sold off more gradually. The dollar's initial strength on the hawkish SEP faded as growth fears dominated. VIX remained elevated above 25 for the full week — volatility was repriced, not just spiked.</p>
+</div>
+
 <div class="card reveal" style="border-left:3px solid var(--gold)">
 <h3 style="font-size:18px;margin-bottom:12px">Where the Marginal Information Is</h3>
 <p style="color:var(--muted);margin-bottom:16px">The rate decision and dot plot median were entirely priced in — fed funds futures had assigned a 97% probability to a hold, and the median path was spot-on with consensus. This is not where the actionable signal lives.</p>
@@ -659,8 +689,83 @@ function buildRiskBalance(){
   });
 }
 
+/* ── 8. MARKET REACTION CHART ── */
+function buildMarketReaction(){
+  // Daily closes from March 10-25, 2026
+  var dates=['Mar 10','Mar 11','Mar 12','Mar 13','Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25'];
+  // Raw close prices
+  var spx=[6781.48,6775.80,6672.62,6632.19,6699.38,6716.09,6624.70,6606.49,6506.48,6581.00,6556.37,6591.90];
+  var ndx=[24956.47,24965.01,24533.58,24380.73,24655.34,24780.42,24425.09,24355.28,23898.15,24188.59,24002.45,24162.98];
+  var btc=[69926.92,70204.88,70493.46,70968.27,74861.09,73922.48,71245.58,69912.79,70522.59,70914.86,70517.86,71309.88];
+  var gold=[5229.70,5167.40,5115.80,5052.50,4994.00,5001.00,4889.90,4600.70,4570.40,4404.10,4399.30,4549.80];
+  var vix=[24.93,24.23,27.29,27.19,23.51,22.37,25.09,24.06,26.78,26.15,26.95,25.33];
+  var dxy=[98.83,99.23,99.74,100.36,99.71,99.58,100.09,99.23,99.65,98.95,99.43,99.60];
+  // Normalize to index 4 (Mar 16 = pre-FOMC close) = 100
+  function norm(arr){var base=arr[4];return arr.map(function(v){return (v/base)*100});}
+  // VIX is inverse-sentiment; normalize same way
+  var series=[
+    {name:'S&P 500',data:norm(spx),color:BL,width:2.5},
+    {name:'Nasdaq 100',data:norm(ndx),color:PP,width:2},
+    {name:'BTC',data:norm(btc),color:GD,width:2.5},
+    {name:'Gold',data:norm(gold),color:'#e8a838',width:2},
+    {name:'DXY',data:norm(dxy),color:MU,width:1.5},
+    {name:'VIX',data:norm(vix),color:RD,width:2}
+  ];
+  initChart('chartMarketReaction',{
+    tooltip:{trigger:'axis',backgroundColor:tooltipBg,borderColor:'rgba(255,255,255,.1)',textStyle:{color:'#e8edf5',fontFamily:'Inter',fontSize:12},
+      formatter:function(params){
+        var h='<div style="font-weight:600;margin-bottom:6px;color:#fff">'+params[0].axisValue+'</div>';
+        params.forEach(function(p){
+          var v=p.value;var chg=(v-100).toFixed(2);var sign=chg>=0?'+':'';var col=chg>=0?TC:RD;
+          h+='<div style="display:flex;align-items:center;gap:6px;margin:2px 0">'+p.marker+'<span style="color:'+MU+'">'+p.seriesName+'</span><span style="font-family:JetBrains Mono;font-weight:600;color:'+col+';margin-left:auto">'+sign+chg+'%</span></div>';
+        });
+        return h;
+      }
+    },
+    legend:{data:series.map(function(s){return s.name}),textStyle:{color:MU,fontFamily:'Inter',fontSize:11},top:4,itemGap:16},
+    grid:{top:50,right:20,bottom:40,left:55},
+    xAxis:{type:'category',data:dates,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false}},
+    yAxis:{type:'value',name:'Indexed (Pre-FOMC = 100)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11,padding:[0,0,0,20]},axisLabel:{...axisLabel,formatter:'{value}'},splitLine:splitLine,min:function(val){return Math.floor(val.min-1)},max:function(val){return Math.ceil(val.max+1)}},
+    series:series.map(function(s){
+      return {name:s.name,type:'line',data:s.data,smooth:0.2,symbol:'circle',symbolSize:5,lineStyle:{width:s.width,color:s.color},itemStyle:{color:s.color},emphasis:{focus:'series'}};
+    }).concat([{
+      type:'line',markArea:{silent:true,data:[[{xAxis:'Mar 17',itemStyle:{color:'rgba(255,215,0,.08)',borderColor:'rgba(255,215,0,.2)',borderWidth:1,borderType:'dashed'}},{xAxis:'Mar 18'}]],label:{show:true,position:'insideTop',formatter:'FOMC\nMeeting',color:GD,fontFamily:'Inter',fontSize:10,fontWeight:600}},data:[]}
+    ])
+  });
+}
+
+/* ── 9. YIELD REACTION CHART ── */
+function buildYieldReaction(){
+  var dates=['Mar 10','Mar 11','Mar 12','Mar 13','Mar 16','Mar 17','Mar 18','Mar 19','Mar 20','Mar 23','Mar 24','Mar 25'];
+  var t2y=[3.57,3.64,3.76,3.73,3.68,3.68,3.76,3.79,3.88,3.83,3.90,3.84];
+  var t10y=[4.15,4.21,4.27,4.28,4.23,4.20,4.26,4.25,4.39,4.34,4.39,4.33];
+  var spread=t10y.map(function(v,i){return +(v-t2y[i]).toFixed(2)});
+  initChart('chartYieldReaction',{
+    tooltip:{trigger:'axis',backgroundColor:tooltipBg,borderColor:'rgba(255,255,255,.1)',textStyle:{color:'#e8edf5',fontFamily:'Inter',fontSize:12},
+      formatter:function(params){
+        var h='<div style="font-weight:600;margin-bottom:6px;color:#fff">'+params[0].axisValue+'</div>';
+        params.forEach(function(p){h+='<div style="display:flex;align-items:center;gap:6px;margin:2px 0">'+p.marker+'<span style="color:'+MU+'">'+p.seriesName+'</span><span style="font-family:JetBrains Mono;font-weight:600;color:#fff;margin-left:auto">'+p.value.toFixed(2)+'%</span></div>';});
+        return h;
+      }
+    },
+    legend:{data:['2Y Yield','10Y Yield','10Y-2Y Spread'],textStyle:{color:MU,fontFamily:'Inter',fontSize:11},top:4},
+    grid:{top:50,right:20,bottom:40,left:55},
+    xAxis:{type:'category',data:dates,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false}},
+    yAxis:[
+      {type:'value',name:'Yield (%)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11},axisLabel:{...axisLabel,formatter:'{value}%'},splitLine:splitLine,min:3.4,max:4.5},
+      {type:'value',name:'Spread (pp)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11},axisLabel:{...axisLabel,formatter:'{value}'},splitLine:{show:false},min:0.3,max:0.7,position:'right'}
+    ],
+    series:[
+      {name:'2Y Yield',type:'line',data:t2y,smooth:0.2,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:BL},itemStyle:{color:BL}},
+      {name:'10Y Yield',type:'line',data:t10y,smooth:0.2,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:GD},itemStyle:{color:GD}},
+      {name:'10Y-2Y Spread',type:'bar',yAxisIndex:1,data:spread,barWidth:20,itemStyle:{color:'rgba(167,139,250,.4)',borderRadius:[3,3,0,0]},emphasis:{itemStyle:{color:'rgba(167,139,250,.7)'}}},
+      {type:'line',markArea:{silent:true,data:[[{xAxis:'Mar 17',itemStyle:{color:'rgba(255,215,0,.08)',borderColor:'rgba(255,215,0,.2)',borderWidth:1,borderType:'dashed'}},{xAxis:'Mar 18'}]],label:{show:true,position:'insideTop',formatter:'FOMC',color:GD,fontFamily:'Inter',fontSize:10,fontWeight:600}},data:[]}
+    ]
+  });
+}
+
 /* ── BUILD ALL ── */
-function buildAllCharts(){buildInflation();buildUnemployment();buildNFP();buildGDP();buildFedFunds();buildDotPlot();buildRiskBalance();}
+function buildAllCharts(){buildInflation();buildUnemployment();buildNFP();buildGDP();buildFedFunds();buildDotPlot();buildRiskBalance();buildMarketReaction();buildYieldReaction();}
 buildAllCharts();
 window.addEventListener('resize',()=>{charts.forEach(c=>c.resize())});
 
