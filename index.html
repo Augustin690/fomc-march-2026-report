@@ -397,8 +397,8 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 </div>
 
 <div class="card reveal">
-<h3 style="font-size:16px;margin-bottom:8px;color:var(--muted)">Intraday Reaction — Decision Day (March 18, Hourly)</h3>
-<p style="color:var(--muted);font-size:13px;margin-bottom:16px">S&P 500 and Nasdaq 100 at hourly resolution across March 17-19. The FOMC statement was released at 2:00 PM ET on March 18, followed by Chair Powell's press conference at 2:30 PM. The selloff began immediately at the statement and accelerated through the close and into the next morning.</p>
+<h3 style="font-size:16px;margin-bottom:8px;color:var(--muted)">Intraday Reaction — Decision Day (March 18, 30-Min)</h3>
+<p style="color:var(--muted);font-size:13px;margin-bottom:16px">S&P 500 and Nasdaq 100 at 30-minute resolution from the March 17 close through March 19 close. The FOMC statement was released at 2:00 PM ET on March 18 (red vertical line), followed by Chair Powell's press conference at 2:30 PM. The selloff accelerated into the close and gapped lower the next morning.</p>
 <div class="chart-box" id="chartIntraday" style="height:420px"></div>
 </div>
 
@@ -776,29 +776,25 @@ function buildYieldReaction(){
 
 /* ── 10. INTRADAY CHART ── */
 function buildIntraday(){
-  // Hourly closes Mar 17-19 for S&P 500 and Nasdaq 100
-  var times=[
-    '17 9:30','17 10:30','17 11:30','17 12:30','17 13:30','17 14:30','17 15:30',
-    '18 9:30','18 10:30','18 11:30','18 12:30','18 13:30','18 14:30','18 15:30',
-    '19 9:30','19 10:30','19 11:30','19 12:30','19 13:30','19 14:30','19 15:30'
-  ];
+  // 30-min closes Mar 17 close through Mar 19 close (ET times)
+  // Data from yfinance 30m interval; UTC converted to ET (UTC-4)
   var labels=[
-    'Mar 17\n9:30','10:30','11:30','12:30','13:30','14:30','15:30',
-    'Mar 18\n9:30','10:30','11:30','12:30','13:30','14:30','15:30',
-    'Mar 19\n9:30','10:30','11:30','12:30','13:30','14:30','15:30'
+    'Mar 17\n16:00',
+    'Mar 18\n9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30',
+    'Mar 19\n9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30'
   ];
-  var spxH=[6735.0,6726.7,6721.8,6724.6,6718.9,6719.9,6717.2, 6669.3,6678.8,6680.6,6667.5,6670.2,6638.1,6624.4, 6571.6,6585.9,6588.4,6579.7,6580.4,6610.5,6606.2];
-  var ndxH=[24830.2,24783.0,24781.8,24787.3,24773.1,24776.9,24783.9, 24606.4,24664.2,24662.5,24604.9,24627.8,24496.0,24423.0, 24208.3,24248.0,24255.2,24232.0,24254.2,24372.5,24352.7];
-  // Normalize to Mar 17 15:30 close (index 6)
-  var spxBase=spxH[6],ndxBase=ndxH[6];
-  var spxNorm=spxH.map(function(v){return (v/spxBase)*100});
-  var ndxNorm=ndxH.map(function(v){return (v/ndxBase)*100});
+  var spx30=[6717.19, 6701.75,6669.25,6680.02,6678.81,6679.79,6680.58,6675.25,6667.47,6675.81,6670.19,6643.35,6638.07,6624.38, 6593.62,6571.64,6587.15,6585.89,6586.70,6588.43,6580.24,6579.66,6580.89,6580.35,6592.55,6610.45,6606.20];
+  var ndx30=[24783.94, 24736.79,24606.42,24654.96,24664.17,24675.83,24662.52,24619.92,24604.89,24648.14,24627.75,24519.11,24496.02,24422.99, 24270.89,24208.26,24278.19,24247.98,24251.38,24255.19,24238.60,24231.99,24236.66,24254.15,24286.97,24372.48,24352.73];
+  // Normalize to index 0 (Mar 17 16:00 close) = 100
+  var spxBase=spx30[0],ndxBase=ndx30[0];
+  var spxNorm=spx30.map(function(v){return (v/spxBase)*100});
+  var ndxNorm=ndx30.map(function(v){return (v/ndxBase)*100});
   initChart('chartIntraday',{
     tooltip:{trigger:'axis',backgroundColor:tooltipBg,borderColor:'rgba(255,255,255,.1)',textStyle:{color:'#e8edf5',fontFamily:'Inter',fontSize:12},
       formatter:function(params){
         var h='<div style="font-weight:600;margin-bottom:6px;color:#fff">'+params[0].axisValue.replace('\n',' ')+'</div>';
         params.forEach(function(p){
-          var v=p.value;var chg=(v-100).toFixed(2);var sign=chg>=0?'+':'';var col=chg>=0?TC:RD;
+          var v=p.value;if(v==null)return;var chg=(v-100).toFixed(2);var sign=chg>=0?'+':'';var col=chg>=0?TC:RD;
           h+='<div style="display:flex;align-items:center;gap:6px;margin:2px 0">'+p.marker+'<span style="color:'+MU+'">'+p.seriesName+'</span><span style="font-family:JetBrains Mono;font-weight:600;color:'+col+';margin-left:auto">'+sign+chg+'%</span></div>';
         });
         return h;
@@ -806,13 +802,13 @@ function buildIntraday(){
     },
     legend:{data:['S&P 500','Nasdaq 100'],textStyle:{color:MU,fontFamily:'Inter',fontSize:11},top:4},
     grid:{top:50,right:20,bottom:60,left:55},
-    xAxis:{type:'category',data:labels,axisLabel:{...axisLabel,fontSize:10,interval:0,rotate:45,formatter:function(v){return v}},axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false}},
+    xAxis:{type:'category',data:labels,axisLabel:{...axisLabel,fontSize:10,interval:0,rotate:45},axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false}},
     yAxis:{type:'value',name:'Indexed (Mar 17 Close = 100)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11},axisLabel:{...axisLabel,formatter:'{value}'},splitLine:splitLine,min:function(val){return Math.floor(val.min*10-1)/10},max:function(val){return Math.ceil(val.max*10+1)/10}},
     series:[
-      {name:'S&P 500',type:'line',data:spxNorm,smooth:0,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:BL},itemStyle:{color:BL},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(78,159,255,.15)'},{offset:1,color:'rgba(78,159,255,.01)'}]}}},
-      {name:'Nasdaq 100',type:'line',data:ndxNorm,smooth:0,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:PP},itemStyle:{color:PP},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(167,139,250,.15)'},{offset:1,color:'rgba(167,139,250,.01)'}]}}},
-      {type:'line',markArea:{silent:true,data:[[{xAxis:'18 13:30',itemStyle:{color:'rgba(255,107,107,.12)',borderColor:'rgba(255,107,107,.3)',borderWidth:1,borderType:'dashed'}},{xAxis:'18 15:30'}]],label:{show:true,position:'insideTop',formatter:'Statement\n+ Presser',color:RD,fontFamily:'Inter',fontSize:9,fontWeight:600}},data:[]},
-      {type:'line',markLine:{silent:true,data:[{xAxis:'18 13:30',label:{show:true,position:'insideStartTop',formatter:'2:00 PM\nFOMC Statement',color:RD,fontFamily:'Inter',fontSize:9,fontWeight:600},lineStyle:{color:RD,type:'dashed',width:1.5}}]},data:[]}
+      {name:'S&P 500',type:'line',data:spxNorm,smooth:0,symbol:'circle',symbolSize:4,lineStyle:{width:2.5,color:BL},itemStyle:{color:BL},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(78,159,255,.12)'},{offset:1,color:'rgba(78,159,255,.01)'}]}}},
+      {name:'Nasdaq 100',type:'line',data:ndxNorm,smooth:0,symbol:'circle',symbolSize:4,lineStyle:{width:2.5,color:PP},itemStyle:{color:PP},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(167,139,250,.12)'},{offset:1,color:'rgba(167,139,250,.01)'}]}}},
+      {type:'line',markLine:{silent:true,symbol:['none','none'],data:[{xAxis:'14:00',label:{show:true,position:'insideEndTop',formatter:'2:00 PM ET\nFOMC Decision',color:RD,fontFamily:'Inter',fontSize:10,fontWeight:700,backgroundColor:'rgba(15,31,56,.85)',padding:[4,8],borderRadius:4},lineStyle:{color:RD,type:'solid',width:2}}]},data:[]},
+      {type:'line',markArea:{silent:true,data:[[{xAxis:'14:00',itemStyle:{color:'rgba(255,107,107,.08)'}},{xAxis:'15:30'}]],label:{show:false}},data:[]}
     ]
   });
 }
