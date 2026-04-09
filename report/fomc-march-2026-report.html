@@ -386,7 +386,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 
 <div class="card reveal">
 <h3 style="font-size:16px;margin-bottom:8px;color:var(--muted)">Cross-Asset Reaction — FOMC Window (Mar 10–25)</h3>
-<p style="color:var(--muted);font-size:13px;margin-bottom:16px">Performance indexed to 100 at the March 16 close (day before FOMC). The vertical band marks the March 17-18 meeting. Data sourced from Yahoo Finance and FRED.</p>
+<p style="color:var(--muted);font-size:13px;margin-bottom:16px">Performance indexed to 100 at the March 17 close (last close before the FOMC decision was released on Mar 18 at 2:00 PM ET). The vertical band marks the meeting. Data sourced from Yahoo Finance and FRED.</p>
 <div class="chart-box" id="chartMarketReaction" style="height:440px"></div>
 </div>
 
@@ -396,22 +396,28 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 <div class="chart-box-sm" id="chartYieldReaction" style="height:340px"></div>
 </div>
 
+<div class="card reveal">
+<h3 style="font-size:16px;margin-bottom:8px;color:var(--muted)">Intraday Reaction — Decision Day (March 18, Hourly)</h3>
+<p style="color:var(--muted);font-size:13px;margin-bottom:16px">S&P 500 and Nasdaq 100 at hourly resolution across March 17-19. The FOMC statement was released at 2:00 PM ET on March 18, followed by Chair Powell's press conference at 2:30 PM. The selloff began immediately at the statement and accelerated through the close and into the next morning.</p>
+<div class="chart-box" id="chartIntraday" style="height:420px"></div>
+</div>
+
 <div class="card reveal" style="overflow-x:auto">
 <h3 style="font-size:16px;margin-bottom:16px;color:var(--muted)">Asset Scorecard — Before vs After FOMC</h3>
 <table class="data-table">
-<thead><tr><th>Asset</th><th class="mono">Mar 16 Close</th><th class="mono">Mar 18 Close</th><th class="mono">Mar 25 Close</th><th>2-Day Move</th><th>1-Week Move</th></tr></thead>
+<thead><tr><th>Asset</th><th class="mono">Mar 17 Close</th><th class="mono">Mar 18 Close</th><th class="mono">Mar 25 Close</th><th>1-Day Move</th><th>1-Week Move</th></tr></thead>
 <tbody>
-<tr><td>S&P 500</td><td class="mono">6,699</td><td class="mono">6,625</td><td class="mono">6,592</td><td style="color:var(--red)" class="mono">-1.11%</td><td style="color:var(--red)" class="mono">-1.60%</td></tr>
-<tr><td>Nasdaq 100</td><td class="mono">24,655</td><td class="mono">24,425</td><td class="mono">24,163</td><td style="color:var(--red)" class="mono">-0.93%</td><td style="color:var(--red)" class="mono">-2.00%</td></tr>
-<tr><td>BTC</td><td class="mono">$74,861</td><td class="mono">$71,246</td><td class="mono">$71,310</td><td style="color:var(--red)" class="mono">-4.83%</td><td style="color:var(--red)" class="mono">-4.74%</td></tr>
-<tr><td>Gold</td><td class="mono">$4,994</td><td class="mono">$4,890</td><td class="mono">$4,550</td><td style="color:var(--red)" class="mono">-2.08%</td><td style="color:var(--red)" class="mono">-8.90%</td></tr>
-<tr><td>DXY</td><td class="mono">99.71</td><td class="mono">100.09</td><td class="mono">99.60</td><td style="color:var(--teal)" class="mono">+0.38%</td><td style="color:var(--red)" class="mono">-0.11%</td></tr>
-<tr><td>VIX</td><td class="mono">23.51</td><td class="mono">25.09</td><td class="mono">25.33</td><td style="color:var(--red)" class="mono">+6.72%</td><td style="color:var(--red)" class="mono">+7.74%</td></tr>
+<tr><td>S&P 500</td><td class="mono">6,716</td><td class="mono">6,625</td><td class="mono">6,592</td><td style="color:var(--red)" class="mono">-1.36%</td><td style="color:var(--red)" class="mono">-1.85%</td></tr>
+<tr><td>Nasdaq 100</td><td class="mono">24,780</td><td class="mono">24,425</td><td class="mono">24,163</td><td style="color:var(--red)" class="mono">-1.43%</td><td style="color:var(--red)" class="mono">-2.49%</td></tr>
+<tr><td>BTC</td><td class="mono">$73,922</td><td class="mono">$71,246</td><td class="mono">$71,310</td><td style="color:var(--red)" class="mono">-3.62%</td><td style="color:var(--red)" class="mono">-3.53%</td></tr>
+<tr><td>Gold</td><td class="mono">$5,001</td><td class="mono">$4,890</td><td class="mono">$4,550</td><td style="color:var(--red)" class="mono">-2.22%</td><td style="color:var(--red)" class="mono">-9.02%</td></tr>
+<tr><td>DXY</td><td class="mono">99.58</td><td class="mono">100.09</td><td class="mono">99.60</td><td style="color:var(--teal)" class="mono">+0.51%</td><td style="color:var(--muted)" class="mono">+0.02%</td></tr>
+<tr><td>VIX</td><td class="mono">22.37</td><td class="mono">25.09</td><td class="mono">25.33</td><td style="color:var(--red)" class="mono">+12.2%</td><td style="color:var(--red)" class="mono">+13.2%</td></tr>
 <tr><td>2Y Yield</td><td class="mono">3.68%</td><td class="mono">3.76%</td><td class="mono">3.84%</td><td style="color:var(--red)" class="mono">+8bp</td><td style="color:var(--red)" class="mono">+16bp</td></tr>
-<tr><td>10Y Yield</td><td class="mono">4.23%</td><td class="mono">4.26%</td><td class="mono">4.33%</td><td style="color:var(--red)" class="mono">+3bp</td><td style="color:var(--red)" class="mono">+10bp</td></tr>
+<tr><td>10Y Yield</td><td class="mono">4.20%</td><td class="mono">4.26%</td><td class="mono">4.33%</td><td style="color:var(--red)" class="mono">+6bp</td><td style="color:var(--red)" class="mono">+13bp</td></tr>
 </tbody>
 </table>
-<p style="color:var(--muted);font-size:12px;margin-top:12px;font-style:italic">Red across the board. BTC led the selloff (-4.8% in 2 days), followed by gold (-2.1%). Equities sold off more gradually. The dollar's initial strength on the hawkish SEP faded as growth fears dominated. VIX remained elevated above 25 for the full week — volatility was repriced, not just spiked.</p>
+<p style="color:var(--muted);font-size:12px;margin-top:12px;font-style:italic">Red across the board. BTC led the selloff (-3.6% on decision day), VIX spiked +12%. Equities sold off more gradually but accelerated into the week. The dollar's initial strength on the hawkish SEP faded as growth fears dominated. Gold's -9% one-week decline reflected forced liquidation alongside the broader risk-off move. Yields repriced sharply — the 2Y jumped +16bp, pricing out near-term cut expectations.</p>
 </div>
 
 <div class="card reveal" style="border-left:3px solid var(--gold)">
@@ -700,8 +706,8 @@ function buildMarketReaction(){
   var gold=[5229.70,5167.40,5115.80,5052.50,4994.00,5001.00,4889.90,4600.70,4570.40,4404.10,4399.30,4549.80];
   var vix=[24.93,24.23,27.29,27.19,23.51,22.37,25.09,24.06,26.78,26.15,26.95,25.33];
   var dxy=[98.83,99.23,99.74,100.36,99.71,99.58,100.09,99.23,99.65,98.95,99.43,99.60];
-  // Normalize to index 4 (Mar 16 = pre-FOMC close) = 100
-  function norm(arr){var base=arr[4];return arr.map(function(v){return (v/base)*100});}
+  // Normalize to index 5 (Mar 17 = last close before decision released on Mar 18) = 100
+  function norm(arr){var base=arr[5];return arr.map(function(v){return (v/base)*100});}
   // VIX is inverse-sentiment; normalize same way
   var series=[
     {name:'S&P 500',data:norm(spx),color:BL,width:2.5},
@@ -764,8 +770,51 @@ function buildYieldReaction(){
   });
 }
 
+/* ── 10. INTRADAY CHART ── */
+function buildIntraday(){
+  // Hourly closes Mar 17-19 for S&P 500 and Nasdaq 100
+  var times=[
+    '17 9:30','17 10:30','17 11:30','17 12:30','17 13:30','17 14:30','17 15:30',
+    '18 9:30','18 10:30','18 11:30','18 12:30','18 13:30','18 14:30','18 15:30',
+    '19 9:30','19 10:30','19 11:30','19 12:30','19 13:30','19 14:30','19 15:30'
+  ];
+  var labels=[
+    'Mar 17\n9:30','10:30','11:30','12:30','13:30','14:30','15:30',
+    'Mar 18\n9:30','10:30','11:30','12:30','13:30','14:30','15:30',
+    'Mar 19\n9:30','10:30','11:30','12:30','13:30','14:30','15:30'
+  ];
+  var spxH=[6735.0,6726.7,6721.8,6724.6,6718.9,6719.9,6717.2, 6669.3,6678.8,6680.6,6667.5,6670.2,6638.1,6624.4, 6571.6,6585.9,6588.4,6579.7,6580.4,6610.5,6606.2];
+  var ndxH=[24830.2,24783.0,24781.8,24787.3,24773.1,24776.9,24783.9, 24606.4,24664.2,24662.5,24604.9,24627.8,24496.0,24423.0, 24208.3,24248.0,24255.2,24232.0,24254.2,24372.5,24352.7];
+  // Normalize to Mar 17 15:30 close (index 6)
+  var spxBase=spxH[6],ndxBase=ndxH[6];
+  var spxNorm=spxH.map(function(v){return (v/spxBase)*100});
+  var ndxNorm=ndxH.map(function(v){return (v/ndxBase)*100});
+  initChart('chartIntraday',{
+    tooltip:{trigger:'axis',backgroundColor:tooltipBg,borderColor:'rgba(255,255,255,.1)',textStyle:{color:'#e8edf5',fontFamily:'Inter',fontSize:12},
+      formatter:function(params){
+        var h='<div style="font-weight:600;margin-bottom:6px;color:#fff">'+params[0].axisValue.replace('\n',' ')+'</div>';
+        params.forEach(function(p){
+          var v=p.value;var chg=(v-100).toFixed(2);var sign=chg>=0?'+':'';var col=chg>=0?TC:RD;
+          h+='<div style="display:flex;align-items:center;gap:6px;margin:2px 0">'+p.marker+'<span style="color:'+MU+'">'+p.seriesName+'</span><span style="font-family:JetBrains Mono;font-weight:600;color:'+col+';margin-left:auto">'+sign+chg+'%</span></div>';
+        });
+        return h;
+      }
+    },
+    legend:{data:['S&P 500','Nasdaq 100'],textStyle:{color:MU,fontFamily:'Inter',fontSize:11},top:4},
+    grid:{top:50,right:20,bottom:60,left:55},
+    xAxis:{type:'category',data:labels,axisLabel:{...axisLabel,fontSize:10,interval:0,rotate:45,formatter:function(v){return v}},axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false}},
+    yAxis:{type:'value',name:'Indexed (Mar 17 Close = 100)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11},axisLabel:{...axisLabel,formatter:'{value}'},splitLine:splitLine,min:function(val){return Math.floor(val.min*10-1)/10},max:function(val){return Math.ceil(val.max*10+1)/10}},
+    series:[
+      {name:'S&P 500',type:'line',data:spxNorm,smooth:0,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:BL},itemStyle:{color:BL},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(78,159,255,.15)'},{offset:1,color:'rgba(78,159,255,.01)'}]}}},
+      {name:'Nasdaq 100',type:'line',data:ndxNorm,smooth:0,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:PP},itemStyle:{color:PP},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(167,139,250,.15)'},{offset:1,color:'rgba(167,139,250,.01)'}]}}},
+      {type:'line',markArea:{silent:true,data:[[{xAxis:'18 13:30',itemStyle:{color:'rgba(255,107,107,.12)',borderColor:'rgba(255,107,107,.3)',borderWidth:1,borderType:'dashed'}},{xAxis:'18 15:30'}]],label:{show:true,position:'insideTop',formatter:'Statement\n+ Presser',color:RD,fontFamily:'Inter',fontSize:9,fontWeight:600}},data:[]},
+      {type:'line',markLine:{silent:true,data:[{xAxis:'18 13:30',label:{show:true,position:'insideStartTop',formatter:'2:00 PM\nFOMC Statement',color:RD,fontFamily:'Inter',fontSize:9,fontWeight:600},lineStyle:{color:RD,type:'dashed',width:1.5}}]},data:[]}
+    ]
+  });
+}
+
 /* ── BUILD ALL ── */
-function buildAllCharts(){buildInflation();buildUnemployment();buildNFP();buildGDP();buildFedFunds();buildDotPlot();buildRiskBalance();buildMarketReaction();buildYieldReaction();}
+function buildAllCharts(){buildInflation();buildUnemployment();buildNFP();buildGDP();buildFedFunds();buildDotPlot();buildRiskBalance();buildMarketReaction();buildYieldReaction();buildIntraday();}
 buildAllCharts();
 window.addEventListener('resize',()=>{charts.forEach(c=>c.resize())});
 
