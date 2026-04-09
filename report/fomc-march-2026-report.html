@@ -708,15 +708,15 @@ function buildMarketReaction(){
   var dxy=[98.83,99.23,99.74,100.36,99.71,99.58,100.09,99.23,99.65,98.95,99.43,99.60];
   // Normalize to index 5 (Mar 17 = last close before decision released on Mar 18) = 100
   function norm(arr){var base=arr[5];return arr.map(function(v){return (v/base)*100});}
-  // VIX is inverse-sentiment; normalize same way
-  var series=[
+  // VIX on secondary axis for readability
+  var priceSeries=[
     {name:'S&P 500',data:norm(spx),color:BL,width:2.5},
     {name:'Nasdaq 100',data:norm(ndx),color:PP,width:2},
     {name:'BTC',data:norm(btc),color:GD,width:2.5},
     {name:'Gold',data:norm(gold),color:'#e8a838',width:2},
-    {name:'DXY',data:norm(dxy),color:MU,width:1.5},
-    {name:'VIX',data:norm(vix),color:RD,width:2}
+    {name:'DXY',data:norm(dxy),color:MU,width:1.5}
   ];
+  var vixNorm=norm(vix);
   initChart('chartMarketReaction',{
     tooltip:{trigger:'axis',backgroundColor:tooltipBg,borderColor:'rgba(255,255,255,.1)',textStyle:{color:'#e8edf5',fontFamily:'Inter',fontSize:12},
       formatter:function(params){
@@ -728,14 +728,18 @@ function buildMarketReaction(){
         return h;
       }
     },
-    legend:{data:series.map(function(s){return s.name}),textStyle:{color:MU,fontFamily:'Inter',fontSize:11},top:4,itemGap:16},
-    grid:{top:50,right:20,bottom:40,left:55},
+    legend:{data:priceSeries.map(function(s){return s.name}).concat(['VIX']),textStyle:{color:MU,fontFamily:'Inter',fontSize:11},top:4,itemGap:16},
+    grid:{top:50,right:65,bottom:40,left:55},
     xAxis:{type:'category',data:dates,axisLabel:axisLabel,axisLine:{lineStyle:{color:'rgba(255,255,255,.15)'}},axisTick:{show:false}},
-    yAxis:{type:'value',name:'Indexed (Pre-FOMC = 100)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11,padding:[0,0,0,20]},axisLabel:{...axisLabel,formatter:'{value}'},splitLine:splitLine,min:function(val){return Math.floor(val.min-1)},max:function(val){return Math.ceil(val.max+1)}},
-    series:series.map(function(s){
-      return {name:s.name,type:'line',data:s.data,smooth:0.2,symbol:'circle',symbolSize:5,lineStyle:{width:s.width,color:s.color},itemStyle:{color:s.color},emphasis:{focus:'series'}};
-    }).concat([{
-      type:'line',markArea:{silent:true,data:[[{xAxis:'Mar 17',itemStyle:{color:'rgba(255,215,0,.08)',borderColor:'rgba(255,215,0,.2)',borderWidth:1,borderType:'dashed'}},{xAxis:'Mar 18'}]],label:{show:true,position:'insideTop',formatter:'FOMC\nMeeting',color:GD,fontFamily:'Inter',fontSize:10,fontWeight:600}},data:[]}
+    yAxis:[
+      {type:'value',name:'Indexed (Mar 17 = 100)',nameTextStyle:{color:MU,fontFamily:'Inter',fontSize:11,padding:[0,0,0,20]},axisLabel:{...axisLabel,formatter:'{value}'},splitLine:splitLine,min:function(val){return Math.floor(val.min-1)},max:function(val){return Math.ceil(val.max+1)}},
+      {type:'value',name:'VIX Index',nameTextStyle:{color:RD,fontFamily:'Inter',fontSize:11},axisLabel:{...axisLabel,color:RD,formatter:'{value}'},splitLine:{show:false},position:'right',min:function(val){return Math.floor(val.min-1)},max:function(val){return Math.ceil(val.max+1)}}
+    ],
+    series:priceSeries.map(function(s){
+      return {name:s.name,type:'line',yAxisIndex:0,data:s.data,smooth:0.2,symbol:'circle',symbolSize:5,lineStyle:{width:s.width,color:s.color},itemStyle:{color:s.color},emphasis:{focus:'series'}};
+    }).concat([
+      {name:'VIX',type:'line',yAxisIndex:1,data:vixNorm,smooth:0.2,symbol:'circle',symbolSize:6,lineStyle:{width:2.5,color:RD,type:'dashed'},itemStyle:{color:RD},emphasis:{focus:'series'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(255,107,107,.1)'},{offset:1,color:'rgba(255,107,107,.01)'}]}}},
+      {type:'line',markArea:{silent:true,data:[[{xAxis:'Mar 17',itemStyle:{color:'rgba(255,215,0,.08)',borderColor:'rgba(255,215,0,.2)',borderWidth:1,borderType:'dashed'}},{xAxis:'Mar 18'}]],label:{show:true,position:'insideTop',formatter:'FOMC\nMeeting',color:GD,fontFamily:'Inter',fontSize:10,fontWeight:600}},data:[]}
     ])
   });
 }
