@@ -807,8 +807,8 @@ function buildIntraday(){
     series:[
       {name:'S&P 500',type:'line',data:spxNorm,smooth:0,symbol:'circle',symbolSize:4,lineStyle:{width:2.5,color:BL},itemStyle:{color:BL},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(78,159,255,.12)'},{offset:1,color:'rgba(78,159,255,.01)'}]}}},
       {name:'Nasdaq 100',type:'line',data:ndxNorm,smooth:0,symbol:'circle',symbolSize:4,lineStyle:{width:2.5,color:PP},itemStyle:{color:PP},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(167,139,250,.12)'},{offset:1,color:'rgba(167,139,250,.01)'}]}}},
-      {type:'line',markLine:{silent:true,symbol:['none','none'],data:[{xAxis:'14:00',label:{show:true,position:'insideEndTop',formatter:'2:00 PM ET\nFOMC Decision',color:RD,fontFamily:'Inter',fontSize:10,fontWeight:700,backgroundColor:'rgba(15,31,56,.85)',padding:[4,8],borderRadius:4},lineStyle:{color:RD,type:'solid',width:2}}]},data:[]},
-      {type:'line',markArea:{silent:true,data:[[{xAxis:'14:00',itemStyle:{color:'rgba(255,107,107,.08)'}},{xAxis:'15:30'}]],label:{show:false}},data:[]}
+      {type:'line',markLine:{silent:true,symbol:['none','none'],data:[{xAxis:10,label:{show:true,position:'insideEndTop',formatter:'2:00 PM ET\nFOMC Decision',color:RD,fontFamily:'Inter',fontSize:10,fontWeight:700,backgroundColor:'rgba(15,31,56,.85)',padding:[4,8],borderRadius:4},lineStyle:{color:RD,type:'solid',width:2}}]},data:[]},
+      {type:'line',markArea:{silent:true,data:[[{xAxis:10,itemStyle:{color:'rgba(255,107,107,.08)'}},{xAxis:13}]],label:{show:false}},data:[]}
     ]
   });
 }
